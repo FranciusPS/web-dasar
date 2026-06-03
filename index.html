@@ -6,6 +6,23 @@
 <title>Rekap Angsuran</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS via CDN (Hybrid Approach) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: '#7c3aed',
+          'primary-dark': '#4c1d95',
+          'primary-light': '#312e81',
+        }
+      }
+    }
+  }
+</script>
+
 <style>
 :root{
   /* Konsep C: Ungu Modern — Purple Fintech */
@@ -22,19 +39,53 @@
   --radius:18px;--radius-sm:12px;
 }
 [data-theme="dark"]{
-  --primary:#a78bfa;--primary-light:#2e1065;--primary-dark:#4c1d95;
-  --success:#22c55e;--success-light:#052e16;
-  --danger:#f87171;--danger-light:#450a0a;
-  --warning:#fbbf24;--warning-light:#451a03;
-  --purple:#f472b6;--purple-light:#500724;
-  --teal:#2dd4bf;--teal-light:#042f2e;
-  --slate:#94a3b8;--slate-light:#1e1b4b;
-  --border:#3b1f6b;--text:#ede9fe;--text-muted:#7c6fa0;
-  --bg:#0f0a1e;--card-bg:#1a1033;
-  --card-shadow:0 2px 8px rgba(0,0,0,.5),0 8px 24px rgba(0,0,0,.4);
+  /* === Modern Professional Fintech (Deep Purple) === */
+  --primary: #7c3aed;
+  --primary-light: #312e81;
+  --primary-dark: #4c1d95;
+
+  --success: #22c55e;
+  --success-light: #052e16;
+
+  --danger: #f87171;
+  --danger-light: #450a0a;
+
+  --warning: #fbbf24;
+  --warning-light: #451a03;
+
+  --purple: #c026d3;
+  --purple-light: #3b0764;
+
+  --teal: #14b8a6;
+  --teal-light: #042f2e;
+
+  --slate: #94a3b8;
+  --slate-light: #1e1b4b;
+
+  --border: #312e81;
+  --text: #ede9fe;
+  --text-muted: #7c6fa0;
+
+  --bg: #0f0a1e;
+  --card-bg: #1a1033;
+
+  /* More premium shadow */
+  --card-shadow: 0 4px 12px rgba(0,0,0,.45), 0 12px 32px rgba(0,0,0,.35);
+
+  /* Modern radius */
+  --radius: 16px;
+  --radius-sm: 12px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:96px;transition:background .3s,color .3s}
+body{
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 96px;
+  transition: background .3s, color .3s;
+  font-feature-settings: "tnum";
+}
 
 /* SPLASH */
 #splash{position:fixed;inset:0;z-index:9999;background:linear-gradient(145deg,#1e0a3c 0%,#4c1d95 50%,#7c3aed 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s,transform .6s}
@@ -65,7 +116,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .app-header::after{content:'';position:absolute;bottom:-60px;left:30px;width:120px;height:120px;border-radius:50%;background:rgba(219,39,119,.12)}
 .header-row{display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:1}
 .header-label{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px}
-.header-title{font-size:1.4rem;font-weight:800;color:#fff}
+.header-title{font-size:1.5rem;font-weight:800;color:#fff;letter-spacing:-0.025em}
 .header-sub{font-size:.82rem;color:rgba(255,255,255,.65);margin-top:3px}
 .header-date{font-size:.72rem;color:rgba(255,255,255,.55);margin-top:2px}
 .header-ver{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:1px 8px;font-size:.6rem;font-weight:700;color:rgba(255,255,255,.75);margin-top:5px}
@@ -73,7 +124,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .btn-copy-total:active{background:rgba(255,255,255,.3)}
 .btn-header{width:36px;height:36px;border-radius:10px;border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:background .15s,transform .1s;backdrop-filter:blur(4px)}
 .btn-header:active{background:rgba(255,255,255,.25);transform:scale(.93)}
-.header-actions{display:flex;gap:8px;flex-shrink:0;align-items:flex-start}
+.header-actions{display:flex;gap:10px;flex-shrink:0;align-items:flex-start}
 
 /* HARI TABS */
 .hari-tabs-wrap{background:#2e1065;padding:0 12px 14px}
@@ -84,21 +135,66 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .hari-tab.legacy-tab{border-style:dashed;opacity:.7;font-size:.7rem}
 
 /* BOTTOM NAV */
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:600px;background:var(--card-bg);border-top:2px solid var(--border);display:flex;z-index:500;box-shadow:0 -4px 24px rgba(0,0,0,.12)}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 4px;cursor:pointer;transition:color .2s;color:var(--text-muted);gap:4px;user-select:none}
-.nav-item.active{color:var(--primary)}
-.nav-icon{font-size:1.4rem;line-height:1;transition:transform .2s}
-.nav-label{font-size:.68rem;font-weight:800}
-.nav-item.active .nav-icon{transform:scale(1.15)}
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:600px;
+  background:var(--card-bg);
+  border-top:1px solid var(--border);
+  display:flex;
+  z-index:500;
+  box-shadow:0 -8px 32px rgba(0,0,0,.35);
+  backdrop-filter:blur(12px);
+}
+.nav-item{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:10px 4px 8px;
+  cursor:pointer;
+  transition:all .2s ease;
+  color:var(--text-muted);
+  gap:2px;
+  user-select:none;
+  font-size:.67rem;
+  font-weight:600;
+  letter-spacing:0.01em;
+}
+.nav-item.active{
+  color:var(--primary);
+}
+.nav-icon{
+  font-size:1.15rem;
+  line-height:1;
+  transition:transform .2s ease;
+}
+.nav-item.active .nav-icon{
+  transform:scale(1.08);
+  color:var(--primary);
+}
 
 /* PAGE */
 .page{display:none;animation:pageFadeIn .18s ease both}
 .page.active{display:block}
 @keyframes pageFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.container{max-width:600px;margin:0 auto;padding:14px 12px}
+.container{max-width:600px;margin:0 auto;padding:18px 16px}
 
 /* CARD */
-.card{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--card-shadow);margin-bottom:16px;overflow:hidden;animation:slideUp .3s ease both;transition:background .3s;border:1px solid var(--border)}
+.card{
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  margin-bottom: 20px;
+  overflow: hidden;
+  animation: slideUp .3s ease both;
+  transition: all .2s ease;
+  border: 1px solid var(--border);
+}
 @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 .card-header{padding:14px 16px 0;display:flex;align-items:center;gap:10px}
 .card-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
@@ -110,17 +206,52 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 
 /* SEARCH */
 .search-wrap{padding:10px 12px 4px}
-.search-inner{display:flex;align-items:center;gap:8px;background:var(--slate-light);border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;transition:border-color .2s}
-.search-inner:focus-within{border-color:var(--primary)}
-.search-inner svg{width:16px;height:16px;color:var(--text-muted);flex-shrink:0}
-.search-inner input{flex:1;border:none;background:transparent;font-family:inherit;font-size:.85rem;color:var(--text);outline:none}
-.search-inner input::placeholder{color:var(--text-muted)}
+.search-inner{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--slate-light);
+  border:1.5px solid var(--border);
+  border-radius:14px;
+  padding:12px 16px;
+  transition:all .2s ease;
+}
+.search-inner:focus-within{
+  border-color:var(--primary);
+  box-shadow:0 0 0 4px rgba(124,58,237,.12);
+}
+.search-inner svg{
+  width:18px;
+  height:18px;
+  color:var(--text-muted);
+  flex-shrink:0;
+}
+.search-inner input{
+  flex:1;
+  border:none;
+  background:transparent;
+  font-family:inherit;
+  font-size:.92rem;
+  color:var(--text);
+  outline:none;
+}
+.search-inner input::placeholder{
+  color:var(--text-muted);
+}
 .btn-clr{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:.9rem;padding:0 2px;display:none}
 .btn-clr.show{display:block}
 
 /* TIER INPUT */
 .tier-list{padding:10px 12px;display:flex;flex-direction:column;gap:10px}
-.tier-item{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;transition:border-color .2s,box-shadow .2s;position:relative;overflow:hidden;background:var(--card-bg)}
+.tier-item{
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:13px 15px;
+  transition:all .2s ease;
+  position:relative;
+  overflow:hidden;
+  background:var(--card-bg);
+}
 .tier-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--primary);border-radius:4px 0 0 4px;opacity:0;transition:opacity .2s}
 .tier-item:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,86,219,.1)}
 .tier-item:focus-within::before{opacity:1}
@@ -147,36 +278,80 @@ input[type=number]{-moz-appearance:textfield}
 .step-btn{width:36px;min-width:36px;height:42px;flex-shrink:0;border:none;background:transparent;color:var(--primary);font-size:1.2rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .1s;user-select:none}
 .step-btn:active{background:var(--primary-light);transform:scale(.88)}
 .step-btn.minus{border-right:1.5px solid var(--border)}.step-btn.plus{border-left:1.5px solid var(--border)}
-.btn-tambah{display:flex;align-items:center;justify-content:center;gap:4px;padding:12px 10px;background:var(--primary);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.85rem;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s,transform .1s;box-shadow:0 3px 12px rgba(124,58,237,.4);user-select:none;min-width:0}
+.btn-tambah{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:13px 18px;
+  background:var(--primary);
+  color:#fff;
+  border:none;
+  border-radius:12px;
+  font-family:inherit;
+  font-size:.9rem;
+  font-weight:700;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:all .2s ease;
+  box-shadow:0 4px 14px rgba(124,58,237,.35);
+  user-select:none;
+  min-width:0;
+}
 .btn-tambah:active{background:var(--primary-dark);transform:scale(.97)}
 .btn-tambah svg{width:14px;height:14px}
 
 /* STATS */
-.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 12px 0}
-.summary-stat{border-radius:var(--radius-sm);padding:12px 14px;display:flex;flex-direction:column;gap:3px}
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 14px 14px}
+.summary-stat{
+  border-radius:var(--radius);
+  padding:14px 15px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  border:1px solid var(--border);
+}
 .summary-stat-wide{grid-column:1/-1}
-.summary-stat.blue{background:var(--primary-light);border:1.5px solid #ddd6fe}
-.summary-stat.green{background:var(--success-light);border:1.5px solid #a7f3d0}
-.summary-stat.orange{background:var(--warning-light);border:1.5px solid #fed7aa}
-.summary-stat-label{font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted)}
-.summary-stat-value{font-size:1rem;font-weight:800;line-height:1.2}
+.summary-stat.blue{background:var(--primary-light)}
+.summary-stat.green{background:var(--success-light)}
+.summary-stat.orange{background:var(--warning-light)}
+.summary-stat-label{font-size:.64rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted)}
+.summary-stat-value{font-size:1.05rem;font-weight:800;line-height:1.15}
 .summary-stat.blue .summary-stat-value{color:var(--primary)}
 .summary-stat.green .summary-stat-value{color:var(--success)}
 .summary-stat.orange .summary-stat-value{color:var(--warning)}
 
 /* GRUP KOLEKTOR */
-.grup-section{padding:8px 12px;display:flex;flex-direction:column;gap:8px}
-.grup-card{border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:var(--card-bg)}
-.grup-header{padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
-.grup-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.grup-name{font-size:.88rem;font-weight:800;color:var(--text);flex:1}
-.grup-setoran{font-size:.72rem;font-weight:700;color:var(--success)}
-.grup-meta{text-align:right;font-size:.72rem;color:var(--text-muted)}
+.grup-section{padding:8px 14px;display:flex;flex-direction:column;gap:8px}
+.grup-card{
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  background:var(--card-bg);
+  transition:all .2s ease;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);
+}
+.grup-card:active{
+  transform:scale(0.985);
+}
+.grup-header{
+  padding:13px 15px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  cursor:pointer;
+  user-select:none;
+  background:var(--slate-light);
+}
+.grup-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.grup-name{font-size:.85rem;font-weight:800;color:var(--text);flex:1}
+.grup-setoran{font-size:.68rem;font-weight:700;color:var(--success)}
+.grup-meta{text-align:right;font-size:.68rem;color:var(--text-muted)}
 .grup-total{font-weight:800;color:var(--success)}
-.grup-chevron{font-size:.8rem;color:var(--text-muted);transition:transform .25s}
+.grup-chevron{font-size:.75rem;color:var(--text-muted);transition:transform .25s}
 .grup-chevron.open{transform:rotate(180deg)}
 .grup-body{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .2s;border-top:0 solid var(--border)}
-.grup-body.open{max-height:2000px;border-top:1px solid var(--border)}
+.grup-body.open{max-height:2000px;border-top:1px solid var(--border);padding-top:6px}
 /* Expand toggle bar */
 .expand-toggle-bar{display:flex;align-items:center;justify-content:space-between;padding:6px 12px 4px;gap:8px}
 .expand-toggle-btn{font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1.5px solid var(--border);background:var(--slate-light);color:var(--text-muted);cursor:pointer;transition:all .15s}
@@ -214,7 +389,17 @@ input[type=number]{-moz-appearance:textfield}
 .btn-del:active{transform:scale(.93)}
 
 /* GRAND TOTAL */
-.grand-total-card{margin:0 12px;background:linear-gradient(135deg,#2e1065 0%,#6d28d9 60%,#db2777 100%);border-radius:var(--radius-sm);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 16px rgba(124,58,237,.4)}
+.grand-total-card{
+  margin:0 12px;
+  background:linear-gradient(135deg,#2e1065 0%,#6d28d9 60%,#7c3aed 100%);
+  border-radius:var(--radius);
+  padding:18px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  box-shadow:0 6px 20px rgba(124,58,237,.35);
+  border:1px solid rgba(255,255,255,.1);
+}
 .gt-label{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7)}
 .gt-value{font-size:1.35rem;font-weight:800;color:#fff;margin-top:3px;letter-spacing:-.02em}
 
@@ -252,8 +437,8 @@ input[type=number]{-moz-appearance:textfield}
 .absen-sum-val{font-size:1.3rem;font-weight:800}
 .absen-sum-lbl{font-size:.62rem;color:var(--text-muted);font-weight:600;margin-top:2px}
 
-.absen-terkumpul-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 12px 0}
-.absen-box{border-radius:var(--radius-sm);padding:10px 14px}
+.absen-terkumpul-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 14px 0}
+.absen-box{border-radius:var(--radius);padding:12px 15px}
 .absen-box.green{background:var(--success-light);border:1.5px solid #a7f3d0}
 .absen-box.orange{background:var(--warning-light);border:1.5px solid #fed7aa}
 .absen-box.teal{background:var(--teal-light);border:1.5px solid var(--teal)}
@@ -267,22 +452,48 @@ input[type=number]{-moz-appearance:textfield}
 .absen-box-sub{font-size:.65rem;color:var(--text-muted);margin-top:2px}
 
 /* Absensi per kolektor */
-.absen-kol-section{padding:10px 12px 4px}
+.absen-kol-section{padding:12px 14px 6px}
 .absen-kol-title{font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
-.absen-kol-list{display:flex;flex-direction:column;gap:6px}
+.absen-kol-list{display:flex;flex-direction:column;gap:8px}
 .absen-kol-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:8px;background:var(--slate-light);border:1.5px solid var(--border)}
 .absen-kol-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .absen-kol-name{font-size:.82rem;font-weight:700;color:var(--text);flex:1}
 .absen-kol-progress{font-size:.72rem;font-weight:600;color:var(--text-muted)}
 .absen-kol-total{font-size:.78rem;font-weight:800;color:var(--success)}
 
-.absen-filter{display:flex;gap:6px;padding:10px 12px 4px;overflow-x:auto;scrollbar-width:none}
+.absen-filter{display:flex;gap:8px;padding:12px 14px 6px;overflow-x:auto;scrollbar-width:none}
 .absen-filter::-webkit-scrollbar{display:none}
-.filter-chip{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:.72rem;font-weight:700;cursor:pointer;border:1.5px solid var(--border);color:var(--text-muted);background:var(--card-bg);transition:all .2s;user-select:none}
-.filter-chip.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 2px 8px rgba(124,58,237,.3)}
+.filter-chip{
+  flex-shrink:0;
+  padding:8px 15px;
+  border-radius:9999px;
+  font-size:.75rem;
+  font-weight:700;
+  cursor:pointer;
+  border:1.5px solid var(--border);
+  color:var(--text);
+  background:var(--card-bg);
+  transition:all .2s ease;
+  user-select:none;
+}
+.filter-chip.active{
+  background:var(--primary);
+  color:#fff;
+  border-color:var(--primary);
+  box-shadow:0 2px 8px rgba(124,58,237,.3);
+}
 
-.absen-list{padding:6px 12px;display:flex;flex-direction:column;gap:5px}
-.absen-item{border:1.5px solid var(--border);border-radius:10px;padding:9px 10px 8px;background:var(--card-bg);transition:border-color .2s;box-shadow:0 1px 3px rgba(0,0,0,.04);position:relative}
+.absen-list{padding:8px 14px;display:flex;flex-direction:column;gap:8px}
+.absen-item{
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:13px 15px;
+  margin-bottom:10px;
+  background:var(--card-bg);
+  transition:all .2s ease;
+  position:relative;
+  box-shadow:0 1px 4px rgba(0,0,0,.15);
+}
 .absen-item.hadir{border-left:3px solid var(--success);background:var(--success-light)}
 .absen-item.belum{border-left:3px solid var(--warning)}
 .absen-item.terlambat{border-left:3px solid var(--danger)}
@@ -392,19 +603,52 @@ input[type=number]{-moz-appearance:textfield}
 .scroll-btn.visible{opacity:0.35;pointer-events:all}
 .scroll-btn.visible:hover,.scroll-btn.visible:active{opacity:1}
 .scroll-btn:active{transform:scale(.88)}
-.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:1000;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
-.modal-overlay.show{opacity:1;pointer-events:all}
-.modal-sheet{background:var(--card-bg);border-radius:20px 20px 0 0;padding:20px 16px 36px;width:100%;max-width:600px;transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.2,.64,1)}
-.modal-overlay.show .modal-sheet{transform:translateY(0)}
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,.6);
+  z-index:1000;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .2s ease;
+  backdrop-filter:blur(4px);
+}
+.modal-overlay.show{
+  opacity:1;
+  pointer-events:all;
+}
+.modal-sheet{
+  background:var(--card-bg);
+  border-radius:20px 20px 0 0;
+  padding:22px 18px 40px;
+  width:100%;
+  max-width:600px;
+  transform:translateY(100%);
+  transition:transform .35s cubic-bezier(.32,1,.32,1);
+  border:1px solid var(--border);
+  box-shadow:0 -10px 40px rgba(0,0,0,.4);
+}
+.modal-overlay.show .modal-sheet{
+  transform:translateY(0);
+}
 .modal-handle{width:40px;height:4px;background:var(--border);border-radius:4px;margin:0 auto 16px}
-.modal-title{font-size:1rem;font-weight:800;color:var(--text);margin-bottom:4px}
-.modal-sub{font-size:.78rem;color:var(--text-muted);margin-bottom:16px}
-.konfirm-detail{background:var(--slate-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:16px}
-.konfirm-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0}
+.modal-title{font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:2px}
+.modal-sub{font-size:.78rem;color:var(--text-muted);margin-bottom:18px}
+.konfirm-detail{
+  background:var(--slate-light);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px 18px;
+  margin-bottom:18px;
+}
+.konfirm-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0}
 .konfirm-row:not(:last-child){border-bottom:1px solid var(--border)}
-.konfirm-label{font-size:.78rem;color:var(--text-muted);font-weight:600}
-.konfirm-value{font-size:.85rem;font-weight:800;color:var(--text)}
-.konfirm-value.big{color:var(--success);font-size:.95rem}
+.konfirm-label{font-size:.76rem;color:var(--text-muted);font-weight:600}
+.konfirm-value{font-size:.88rem;font-weight:800;color:var(--text)}
+.konfirm-value.big{color:var(--success);font-size:1rem}
 .import-drop-zone{border:2px dashed #c4b5fd;border-radius:var(--radius-sm);padding:28px 20px;text-align:center;background:var(--purple-light);cursor:pointer;transition:border-color .2s;position:relative}
 .import-drop-zone:hover,.import-drop-zone.drag-over{border-color:var(--purple)}
 .import-drop-zone input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
@@ -418,17 +662,56 @@ input[type=number]{-moz-appearance:textfield}
 .import-preview-list{max-height:150px;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:5px}
 .import-preview-item{padding:7px 10px;background:var(--card-bg);border:1px solid var(--border);border-radius:7px;font-size:.75rem;color:var(--text)}
 .import-preview-item strong{color:var(--primary)}
-.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
-.btn-modal{padding:13px;border-radius:var(--radius-sm);border:none;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;transition:opacity .15s,transform .1s}
-.btn-modal:active{opacity:.85;transform:scale(.97)}
-.btn-modal-cancel{background:var(--slate-light);border:1.5px solid var(--border);color:var(--slate)}
-.btn-modal-ok{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(124,58,237,.35)}
+.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.btn-modal{
+  padding:14px 18px;
+  border-radius:12px;
+  border:none;
+  font-family:inherit;
+  font-size:.9rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+.btn-modal:active{
+  transform:scale(.96);
+}
+.btn-modal-cancel{
+  background:var(--slate-light);
+  border:1.5px solid var(--border);
+  color:var(--text);
+}
+.btn-modal-ok{
+  background:var(--primary);
+  color:#fff;
+  box-shadow:0 4px 14px rgba(124,58,237,.35);
+}
 .btn-modal-ok.purple{background:var(--purple)}
-.btn-modal-ok:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+.btn-modal-ok:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+  box-shadow:none;
+}
 
 /* Keterangan input modal */
-.ket-input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.85rem;color:var(--text);background:var(--slate-light);outline:none;transition:border-color .2s;margin-bottom:4px}
-.ket-input:focus{border-color:var(--primary);background:var(--card-bg)}
+.ket-input{
+  width:100%;
+  padding:11px 14px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  font-family:inherit;
+  font-size:.88rem;
+  color:var(--text);
+  background:var(--slate-light);
+  outline:none;
+  transition:all .2s ease;
+  margin-bottom:6px;
+}
+.ket-input:focus{
+  border-color:var(--primary);
+  background:var(--card-bg);
+  box-shadow:0 0 0 3px rgba(124,58,237,.1);
+}
 
 /* ══ NOMOR INFO POPOVER ══ */
 .nomor-popover{position:fixed;z-index:2000;background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;min-width:220px;max-width:280px;box-shadow:0 8px 32px rgba(0,0,0,.18);pointer-events:none;opacity:0;transform:translateY(4px) scale(.97);transition:opacity .18s,transform .18s;display:flex;flex-direction:column;gap:6px}
@@ -467,10 +750,37 @@ input[type=number]{-moz-appearance:textfield}
 
 /* SWIPE GESTURE */
 .absen-item{position:relative;overflow:hidden;transition:transform .15s ease,box-shadow .15s ease}
-.absen-item.swiping{transition:none}
-.swipe-hint-left,.swipe-hint-right{position:absolute;top:0;bottom:0;width:70px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;opacity:0;transition:opacity .15s;pointer-events:none;z-index:1}
-.swipe-hint-left{left:0;background:linear-gradient(90deg,var(--success),transparent);color:#fff;border-radius:var(--radius-sm) 0 0 var(--radius-sm)}
-.swipe-hint-right{right:0;background:linear-gradient(270deg,var(--primary-light),transparent);color:var(--primary);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.absen-item.swiping{
+  transition:none;
+  box-shadow:0 4px 16px rgba(0,0,0,.25);
+}
+.swipe-hint-left,.swipe-hint-right{
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:72px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.5rem;
+  font-weight:800;
+  opacity:0;
+  transition:opacity .2s ease;
+  pointer-events:none;
+  z-index:1;
+}
+.swipe-hint-left{
+  left:0;
+  background:linear-gradient(90deg,var(--success),transparent);
+  color:#fff;
+  border-radius:var(--radius) 0 0 var(--radius);
+}
+.swipe-hint-right{
+  right:0;
+  background:linear-gradient(270deg,var(--primary-light),transparent);
+  color:var(--primary);
+  border-radius:0 var(--radius) var(--radius) 0;
+}
 .absen-item.swipe-reveal-left .swipe-hint-left{opacity:1}
 .absen-item.swipe-reveal-right .swipe-hint-right{opacity:1}
 
@@ -505,22 +815,78 @@ input[type=number]{-moz-appearance:textfield}
 .rekap-expand-val.green{color:var(--success)}.rekap-expand-val.blue{color:var(--primary)}.rekap-expand-val.orange{color:var(--warning)}.rekap-expand-val.red{color:var(--danger)}
 .rekap-chevron{font-size:.65rem;color:var(--text-muted);transition:transform .3s;margin-top:2px;flex-shrink:0}
 .rekap-item.expanded .rekap-chevron{transform:rotate(180deg)}
-/* EXPAND - Absen Kol */
-.absen-kol-item{cursor:pointer;transition:border-color .2s}
-.absen-kol-item:active{opacity:.85}
-.absen-kol-expand{overflow:hidden;max-height:0;transition:max-height .35s ease,opacity .3s ease;opacity:0}
-.absen-kol-item.expanded .absen-kol-expand{max-height:600px;opacity:1}
-.absen-kol-expand-body{border-top:1px solid var(--border);margin-top:8px;padding-top:8px;display:flex;flex-direction:column;gap:4px}
-.absen-kol-expand-row{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:6px;background:var(--card-bg);border:1px solid var(--border)}
-.absen-kol-expand-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:800;color:#fff;flex-shrink:0}
-.absen-kol-expand-nama{flex:1;font-size:.75rem;font-weight:700;color:var(--text)}
-.absen-kol-expand-status{font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:10px}
+/* EXPAND - Absen Kol — identik konsep dengan grup-card di Rekap */
+.absen-kol-item{
+  cursor:pointer;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  background:var(--card-bg);
+  transition:all .2s ease;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+  padding:0;
+  display:flex;
+  flex-direction:column;
+}
+.absen-kol-item:active{transform:scale(0.985)}
+/* Header baris kolektor (selalu terlihat) */
+.absen-kol-header{
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--slate-light);
+  user-select:none;
+}
+/* Body yang expand/collapse smooth */
+.absen-kol-expand{
+  overflow:hidden;
+  max-height:0;
+  transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .25s ease,padding .2s;
+  opacity:0;
+  border-top:0 solid var(--border);
+}
+.absen-kol-item.expanded .absen-kol-expand{
+  max-height:9999px; /* nilai besar agar semua nasabah tampil */
+  opacity:1;
+  border-top:1px solid var(--border);
+  padding-top:6px;
+}
+.absen-kol-expand-body{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  padding:0 10px 10px;
+}
+.absen-kol-expand-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 9px;
+  border-radius:8px;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  transition:background .15s;
+}
+.absen-kol-expand-row:active{background:var(--slate-light)}
+.absen-kol-expand-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:#fff;flex-shrink:0}
+.absen-kol-expand-nama{flex:1;font-size:.78rem;font-weight:700;color:var(--text)}
+.absen-kol-expand-setoran{font-size:.72rem;font-weight:700;color:var(--success);flex-shrink:0;margin-right:4px}
+.absen-kol-expand-status{font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:10px;flex-shrink:0}
 .absen-kol-expand-status.hadir{background:var(--success-light);color:var(--success)}
 .absen-kol-expand-status.belum{background:var(--slate-light);color:var(--text-muted)}
 .absen-kol-expand-status.kredit{background:var(--teal-light);color:var(--teal)}
 .absen-kol-expand-status.terlambat{background:var(--danger-light);color:var(--danger)}
-.absen-kol-chevron{font-size:.65rem;color:var(--text-muted);transition:transform .3s;flex-shrink:0}
+/* Chevron — sama dengan grup-chevron di Rekap */
+.absen-kol-chevron{
+  font-size:.75rem;color:var(--text-muted);
+  transition:transform .25s cubic-bezier(.4,0,.2,1);
+  flex-shrink:0;
+}
 .absen-kol-item.expanded .absen-kol-chevron{transform:rotate(180deg)}
+/* Progress bar mini di header kolektor */
+.absen-kol-progress-bar-wrap{height:3px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:4px;width:100%}
+.absen-kol-progress-bar{height:100%;border-radius:3px;transition:width .4s ease}
 .absen-item.kredit{border-color:var(--teal);background:var(--teal-light)}
 .absen-status-badge.kredit{background:var(--teal);color:#fff}
 .absen-toggle.kredit{background:var(--teal-light);border-color:var(--teal);color:var(--teal);cursor:default}
@@ -576,21 +942,31 @@ input[type=number]{-moz-appearance:textfield}
     <div class="tier-list" id="tierList"></div>
   </div>
   <div id="oldTabBanner" style="display:none;margin:0 0 14px;background:var(--warning-light);border:1.5px solid #fed7aa;border-radius:12px;padding:10px 14px;font-size:.78rem;font-weight:600;color:var(--warning);text-align:center"></div>
-  <div class="card">
-    <div class="card-header"><div class="card-icon green">📊</div><div><div class="card-title">Tabel Rekapitulasi</div><div class="card-sub" id="rekapSub">Data aktif hari ini</div></div></div>
-    <div class="search-wrap">
-      <div class="search-inner">
+  <div class="card" style="margin-top: 6px;">
+    <div class="card-header" style="padding-bottom: 2px;"><div class="card-icon green">📊</div><div><div class="card-title">Tabel Rekapitulasi</div><div class="card-sub" id="rekapSub">Data aktif hari ini</div></div></div>
+    <div class="search-wrap" style="margin: 8px 12px 10px;">
+      <div class="search-inner" style="border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="searchInput" placeholder="Cari nama nasabah atau kolektor..." oninput="onSearch(this)">
+        <input type="text" id="searchInput" placeholder="Cari nama atau kolektor..." oninput="onSearch(this)" style="font-size: .9rem;">
         <button class="btn-clr" id="btnClr" onclick="clearSearch()">✕</button>
       </div>
     </div>
+
+    <!-- Filter Cepat per Kolektor -->
+    <div id="kolektorFilterWrap" style="margin: 0 12px 10px; display: none;">
+      <div style="font-size: .7rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;">Filter Kolektor:</div>
+      <div id="kolektorFilterChips" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+    </div>
+
     <div class="summary-grid">
       <div class="summary-stat blue"><div class="summary-stat-label">Total Nasabah</div><div class="summary-stat-value" id="statNasabah">0 Orang</div></div>
       <div class="summary-stat green"><div class="summary-stat-label">Modal Pokok</div><div class="summary-stat-value" id="statModal">Rp 0</div></div>
       <div class="summary-stat orange summary-stat-wide"><div class="summary-stat-label">💵 Total Setoran / Hari</div><div class="summary-stat-value" id="statSetoran">Rp 0</div></div>
     </div>
-    <div style="padding:12px 12px 4px;font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted)">👥 Kelompok per Kolektor</div>
+    <div style="padding: 12px 14px 8px; font-size: .82rem; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
+      <span>👥</span>
+      <span>Kelompok per Kolektor</span>
+    </div>
     <div class="expand-toggle-bar">
       <span style="font-size:.65rem;font-weight:700;color:var(--text-muted)">📂 Grup Kolektor</span>
       <div style="display:flex;gap:6px">
@@ -603,12 +979,9 @@ input[type=number]{-moz-appearance:textfield}
     <div style="padding:10px 16px 4px;font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted)">📋 Semua Data</div>
     <div id="nunggakWrapRekap" style="display:none;margin-bottom:10px;padding:12px 14px;background:var(--card-bg);border-radius:var(--radius-sm);border:1.5px solid #fca5a5"></div>
     <div class="rekap-list" id="rekapList"></div>
-    <div class="grand-total-card"><div><div class="gt-label">Grand Total</div><div class="gt-value" id="grandTotal">Rp 0</div></div><button class="btn-copy-total" onclick="copyTotal()" title="Salin total">📋 Salin</button></div>
+    <div class="grand-total-card" style="margin-top: 8px;"><div><div class="gt-label">Grand Total</div><div class="gt-value" id="grandTotal">Rp 0</div></div><button class="btn-copy-total" onclick="copyTotal()" title="Salin total">📋 Salin</button></div>
     <div id="targetBarWrap" style="display:none;margin:8px 12px 0;padding:10px 14px;background:var(--card-bg);border:1.5px solid var(--border);border-radius:var(--radius-sm)"></div>
-    <div class="absen-terkumpul-grid" style="margin-top:8px">
-      <div class="absen-box teal"><div class="absen-box-label">💰 Kas Masuk (1x)</div><div class="absen-box-val" id="statKasMasukRekap">Rp 0</div><div class="absen-box-sub">Uang tunai diakui hari ini</div></div>
-      <div class="absen-box purple"><div class="absen-box-label">📦 Prepaid (Kredit)</div><div class="absen-box-val" id="statPrepaidRekap">Rp 0</div><div class="absen-box-sub">Dibayar lebih, diakui nanti</div></div>
-    </div>
+    <!-- KAS MASUK & PREPAID dihapus sesuai permintaan -->
     <div class="action-row">
       <button class="btn-action btn-reset" onclick="resetRekap()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.1"/></svg>Reset</button>
       <button class="btn-action" style="background:var(--warning-light);border:1.5px solid #fde68a;color:var(--warning)" onclick="setTargetHarian()">🎯 Target</button>
@@ -655,22 +1028,43 @@ input[type=number]{-moz-appearance:textfield}
       <div class="absen-sum-item"><div class="absen-sum-val" id="absenBelum" style="color:var(--warning)">0</div><div class="absen-sum-lbl">Belum</div></div>
       <div class="absen-sum-item"><div class="absen-sum-val" id="absenTotal">0</div><div class="absen-sum-lbl">Total</div></div>
     </div>
-    <!-- Terkumpul/Sisa -->
-    <div class="absen-terkumpul-grid">
-      <div class="absen-box green"><div class="absen-box-label">💵 Terkumpul</div><div class="absen-box-val" id="absenTerkumpul">Rp 0</div><div class="absen-box-sub" id="absenTerkumpulSub">dari 0 nasabah hadir</div></div>
-      <div class="absen-box orange"><div class="absen-box-label">⏳ Sisa Tagihan</div><div class="absen-box-val" id="absenSisa">Rp 0</div><div class="absen-box-sub" id="absenSisaSub">0 nasabah belum setor</div></div>
+
+    <!-- GRUP KOLEKTOR (SAMA SEPERTI REKAP) -->
+    <div style="margin: 12px 12px 6px; font-size: .78rem; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
+      <span>👥</span>
+      <span>Kelompok per Kolektor</span>
     </div>
-    <div class="absen-terkumpul-grid" style="margin-top:6px">
-      <div class="absen-box teal"><div class="absen-box-label">💰 Kas Masuk (1x)</div><div class="absen-box-val" id="statKasMasukAbsen">Rp 0</div><div class="absen-box-sub">Uang tunai diakui hari ini</div></div>
-      <div class="absen-box purple"><div class="absen-box-label">📦 Prepaid (Kredit)</div><div class="absen-box-val" id="statPrepaidAbsen">Rp 0</div><div class="absen-box-sub">Dibayar lebih, diakui nanti</div></div>
+    <div id="absenGrupList"></div>
+
+    <!-- Ringkasan Hari Ini -->
+    <div style="margin: 12px 12px 6px; font-size: .78rem; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
+      <span>📊</span>
+      <span>Ringkasan Hari Ini</span>
     </div>
-    <!-- Per kolektor -->
-    <div class="absen-kol-section">
-      <div class="absen-kol-title">📍 Progress per Kolektor</div>
+
+    <div class="absen-terkumpul-grid" style="gap: 10px; margin: 0 12px 14px;">
+      <div class="absen-box green">
+        <div class="absen-box-label">💵 Terkumpul</div>
+        <div class="absen-box-val" id="absenTerkumpul">Rp 0</div>
+        <div class="absen-box-sub" id="absenTerkumpulSub">dari 0 nasabah hadir</div>
+      </div>
+      <div class="absen-box orange">
+        <div class="absen-box-label">⏳ Sisa Tagihan</div>
+        <div class="absen-box-val" id="absenSisa">Rp 0</div>
+        <div class="absen-box-sub" id="absenSisaSub">0 nasabah belum setor</div>
+      </div>
+    </div>
+    <!-- KAS MASUK & PREPAID dihapus dari Absensi juga -->
+    <!-- Progress per Kolektor -->
+    <div class="absen-kol-section" style="margin-top: 8px;">
+      <div class="absen-kol-title" style="margin-bottom: 6px; font-size: .8rem; display:flex; justify-content:space-between; align-items:center">
+        <span>📍 Progress per Kolektor</span>
+        <button onclick="tandaiSemuaHadirKolektor()" style="font-size:.65rem;padding:2px 8px;border-radius:6px;border:1px solid var(--border);background:var(--success-light);color:#166534">Tandai Semua Hadir</button>
+      </div>
       <div class="absen-kol-list" id="absenKolList"></div>
     </div>
     <!-- Filter -->
-    <div class="absen-filter">
+    <div class="absen-filter" style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);">
       <div class="filter-chip active" onclick="filterAbsen('semua',this)">Semua</div>
       <div class="filter-chip" onclick="filterAbsen('hadir',this)">✅ Hadir</div>
       <div class="filter-chip" onclick="filterAbsen('belum',this)">⏳ Belum</div>
@@ -765,6 +1159,101 @@ input[type=number]{-moz-appearance:textfield}
     </div>
   </div>
 </div>
+</div>
+
+<!-- Modal Detail Nasabah -->
+<div class="modal-overlay" id="modalDetailNasabah" onclick="overlayClose(event,'modalDetailNasabah')">
+  <div class="modal-sheet" style="max-width:420px">
+    <div class="modal-handle"></div>
+    <div class="modal-header" style="padding-bottom:8px">
+      <div>
+        <div class="modal-title" id="detailNama"></div>
+        <div class="modal-sub" id="detailKolektor" style="margin-top:2px"></div>
+      </div>
+      <button class="modal-close" onclick="tutupModal('modalDetailNasabah')">✕</button>
+    </div>
+
+    <div style="padding:12px 4px 4px">
+      <!-- Info Utama -->
+      <div style="display:flex;gap:12px;margin-bottom:12px">
+        <div style="flex:1;background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;padding:10px 12px">
+          <div style="font-size:.7rem;color:var(--text-muted)">Tanggal Pengajuan</div>
+          <div id="detailTglPengajuan" style="font-weight:700;margin-top:2px"></div>
+        </div>
+        <div style="flex:1;background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;padding:10px 12px">
+          <div style="font-size:.7rem;color:var(--text-muted)">Tenor</div>
+          <div id="detailTenor" style="font-weight:700;margin-top:2px"></div>
+        </div>
+      </div>
+
+      <!-- Status & Nomor -->
+      <div style="background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div style="font-size:.75rem;font-weight:700">Status Hari Ini</div>
+          <div id="detailStatus" style="font-size:.75rem;font-weight:700;padding:2px 10px;border-radius:9999px"></div>
+        </div>
+        <div style="font-size:.85rem" id="detailNomorInfo"></div>
+      </div>
+
+      <!-- Ringkasan Keuangan -->
+      <div style="display:flex;gap:10px">
+        <div style="flex:1;background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:10px 12px">
+          <div style="font-size:.7rem;color:#166534">Sudah Dibayar</div>
+          <div id="detailSudahBayar" style="font-weight:800;color:#166534;margin-top:4px"></div>
+        </div>
+        <div style="flex:1;background:#fef2f2;border:1.5px solid #fecaca;border-radius:12px;padding:10px 12px">
+          <div style="font-size:.7rem;color:#991b1b">Sisa Tagihan</div>
+          <div id="detailSisaTagihan" style="font-weight:800;color:#991b1b;margin-top:4px"></div>
+        </div>
+      </div>
+
+      <!-- Catatan Khusus -->
+      <div style="margin-top:12px">
+        <div style="font-size:.7rem;font-weight:700;color:var(--text-muted);margin-bottom:4px">📝 Catatan Khusus</div>
+        <textarea id="detailCatatanKhusus" placeholder="Catatan untuk nasabah ini..." style="width:100%;height:60px;padding:8px;border:1.5px solid var(--border);border-radius:8px;font-size:.8rem;resize:vertical"></textarea>
+      </div>
+    </div>
+
+    <div class="modal-actions" style="flex-direction:column;gap:8px;padding-top:8px">
+      <button class="btn-modal btn-modal-ok" onclick="tutupModal('modalDetailNasabah'); prosesTopUpPinjaman()" style="width:100%; background:#f59e0b; border-color:#f59e0b">💰 Top-up Pinjaman</button>
+      <button class="btn-modal btn-modal-ok" onclick="tutupModal('modalDetailNasabah'); prosesPelunasanCepat()" style="width:100%">⚡ Lunas Lebih Cepat</button>
+      <div style="display:flex;gap:8px;width:100%">
+        <button class="btn-modal btn-modal-cancel" onclick="tutupModal('modalDetailNasabah')" style="flex:1">Tutup</button>
+        <button class="btn-modal btn-modal-ok" onclick="tutupModal('modalDetailNasabah'); lihatRiwayatPerubahan()" style="flex:1">Lihat Riwayat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Edit Nasabah -->
+<div class="modal-overlay" id="modalEditNasabah" onclick="overlayClose(event,'modalEditNasabah')">
+  <div class="modal-sheet" style="max-width:380px">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">✏️ Edit Data Nasabah</div>
+      <button class="modal-close" onclick="tutupModal('modalEditNasabah')">✕</button>
+    </div>
+
+    <div style="padding:12px 4px">
+      <div class="field-wrap" style="margin-bottom:10px">
+        <div class="field-label">Nama Nasabah</div>
+        <input type="text" id="editNama" maxlength="50" style="width:100%">
+      </div>
+      <div class="field-wrap" style="margin-bottom:10px">
+        <div class="field-label">Kolektor</div>
+        <select id="editKolektor" style="width:100%"></select>
+      </div>
+      <div class="field-wrap">
+        <div class="field-label">Tanggal Pengajuan</div>
+        <input type="date" id="editTglPengajuan" style="width:100%">
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-modal btn-modal-cancel" onclick="tutupModal('modalEditNasabah')">Batal</button>
+      <button class="btn-modal btn-modal-ok" onclick="simpanEditNasabah()">Simpan Perubahan</button>
+    </div>
+  </div>
 </div>
 
 </div><!-- #app -->
@@ -1054,7 +1543,7 @@ let S={
   catatanNasabah:{}, // { namaKey: 'catatan bebas: alamat, HP, dll' }
   targetHarian:0, // target setoran harian (Rp)
 };
-let pending=null, imported=null, q='', absenQ='', absenFilter='semua', activePage='Rekap', ketTarget=null, bayarKaliTarget=null, bayarKaliSelected=1;
+let pending=null, imported=null, q='', absenQ='', absenFilter='semua', activeKolektorFilter=null, activePage='Rekap', ketTarget=null, bayarKaliTarget=null, bayarKaliSelected=1;
 
 // ════════════════════════════════
 // STORAGE
@@ -1265,34 +1754,7 @@ function getBL(){if(!S.bayarLebih[absenKey()])S.bayarLebih[absenKey()]={};return
 // ════════════════════════════════
 // KAS MASUK & PREPAID
 // ════════════════════════════════
-function hitungKasMasukHariIni(){
-  const ab=getAb();const bl=getBL();
-  const today=todayKey();
-  const nasabahList=buildNasabahList();
-  let total=0;
-  nasabahList.forEach(n=>{
-    const nh=n.nomorHariIni!==undefined?n.nomorHariIni:getNomorHariIni(n.tglPengajuan||today,n.hari);
-    const nb=n.nomorBayar!==undefined?n.nomorBayar:getNomorBayarEfektif(n.key);
-    const hasSet=n.hasNomorBayarSet!==undefined?n.hasNomorBayarSet:(n.key in S.nomorBayar);
-    const bayarTunai=!!(ab[n.key]?.hadir)&&(bl[n.key]||0)>0;
-    const kredit=hasSet&&nb>=nh&&nh>0;
-    // Kas masuk = hanya 1x setoran per nasabah yang bayar hari ini
-    if(bayarTunai||kredit)total+=n.setoranHari;
-  });
-  return total;
-}
-
-function hitungPrepaid(){
-  const bl=getBL();
-  const nasabahList=buildNasabahList();
-  let total=0;
-  nasabahList.forEach(n=>{
-    const kali=bl[n.key]||0;
-    // Prepaid = kelebihan bayar dari 1x setoran
-    if(kali>1)total+=n.setoranHari*(kali-1);
-  });
-  return total;
-}
+// hitungKasMasukHariIni & hitungPrepaid dihapus (tidak digunakan lagi)
 // Hitung nomor angsuran yang jatuh tempo hari ini untuk seorang nasabah
 // (berapa hari kerja sudah lewat sejak tglPengajuan, +1 = nomor hari ini)
 function getNomorHariIni(tglPengajuan,tenor){
@@ -1413,7 +1875,7 @@ function gantiHari(h){
   if(!S.daftarHari.includes(todayNow)){S.daftarHari.push(todayNow);S.data[todayNow]=[];S.daftarHari.sort((a,b)=>{const aL=a.startsWith('legacy-'),bL=b.startsWith('legacy-');if(aL&&!bL)return-1;if(!aL&&bL)return 1;return a.localeCompare(b);});save();}
   // Simpan draft input tab yang sedang aktif sebelum pindah
   saveInputDraft(S.hariAktif);
-  S.hariAktif=h;q='';absenQ='';absenFilter='semua';
+  S.hariAktif=h;q='';absenQ='';absenFilter='semua';activeKolektorFilter=null;
   document.getElementById('searchInput').value='';
   document.getElementById('btnClr').classList.remove('show');
   const abSrch=document.getElementById('absenSearch');if(abSrch){abSrch.value='';}
@@ -1493,9 +1955,17 @@ function renderInput(){
         </div>
         <div id="estLunas-${i}" style="font-size:.7rem;color:var(--success);font-weight:700;padding:0 2px;min-height:14px"></div>
       </div>
-      <div class="catatan-wrap">
-        <input class="catatan-input" type="text" id="cat-${i}" placeholder="NamaNasabah/NamaKolektor" maxlength="80">
-        <div class="catatan-hint">Format: NamaNasabah/NamaKolektor — digunakan untuk pengelompokan & absensi</div>
+      <div style="margin-top:6px">
+        <div class="field-wrap" style="margin-bottom:6px">
+          <div class="field-label">Nama Nasabah</div>
+          <input type="text" id="nama-${i}" placeholder="Nama Nasabah" maxlength="50" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem">
+        </div>
+        <div class="field-wrap">
+          <div class="field-label">Kolektor</div>
+          <select id="kolektor-${i}" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;background:var(--card-bg);color:var(--text)">
+            <!-- options will be populated by JS -->
+          </select>
+        </div>
       </div>`;
     list.appendChild(el);
   });
@@ -1503,7 +1973,113 @@ function renderInput(){
   TIERS.forEach((_,i)=>updateEstLunas(i,TIERS[i]));
   // Restore draft input tab aktif jika ada
   restoreInputDraft(S.hariAktif);
+
+  // Isi dropdown kolektor
+  populateKolektorDropdowns();
+
+  // === Kolektor Chips (klik untuk isi otomatis) ===
+  renderKolektorChipsForInput();
 }
+function renderKolektorChipsForInput() {
+  const container = document.getElementById('tierList');
+  if (!container) return;
+
+  const old = document.getElementById('kolektorQuickChips');
+  if (old) old.remove();
+
+  // Collect existing kolektor
+  const kolektorSet = new Set();
+  S.daftarHari.forEach(h => {
+    (S.data[h]||[]).forEach(d => {
+      const {kolektor} = parseCatatan(d.catatan);
+      if (kolektor && kolektor !== 'Lainnya') kolektorSet.add(kolektor);
+    });
+  });
+  const list = Array.from(kolektorSet).sort();
+  if (list.length === 0) return;
+
+  const wrap = document.createElement('div');
+  wrap.id = 'kolektorQuickChips';
+  wrap.style.cssText = 'margin-top:10px;padding-top:8px;border-top:1px solid var(--border)';
+
+  wrap.innerHTML = `
+    <div style="font-size:.7rem;font-weight:700;color:var(--text-muted);margin-bottom:6px;">📍 Pilih Kolektor (klik untuk isi otomatis)</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;" id="kolektorChipsList"></div>
+  `;
+
+  const chipsDiv = wrap.querySelector('#kolektorChipsList');
+
+  list.forEach(kol => {
+    const chip = document.createElement('div');
+    chip.style.cssText = 'padding:4px 11px;border:1.5px solid var(--border);border-radius:9999px;font-size:.73rem;font-weight:600;background:var(--card-bg);cursor:pointer;';
+    chip.textContent = kol;
+
+    chip.onclick = () => {
+      // Cari input catatan yang kosong atau fokus terakhir
+      const inputs = container.querySelectorAll('.catatan-input');
+      let targetInput = null;
+
+      for (let inp of inputs) {
+        if (!inp.value.trim()) {
+          targetInput = inp;
+          break;
+        }
+      }
+      if (!targetInput && inputs.length > 0) targetInput = inputs[inputs.length-1];
+
+      if (targetInput) {
+        const current = targetInput.value.trim();
+        if (current.includes('/')) {
+          // Ganti bagian kolektor
+          const namaPart = current.split('/')[0];
+          targetInput.value = `${namaPart}/${kol}`;
+        } else if (current) {
+          targetInput.value = `${current}/${kol}`;
+        } else {
+          targetInput.value = `/${kol}`;
+          targetInput.focus();
+          targetInput.setSelectionRange(0,0);
+        }
+        targetInput.focus();
+      }
+    };
+
+    chipsDiv.appendChild(chip);
+  });
+
+  container.appendChild(wrap);
+}
+
+function populateKolektorDropdowns() {
+  // Kumpulkan kolektor unik
+  const kolektorSet = new Set();
+  S.daftarHari.forEach(h => {
+    (S.data[h]||[]).forEach(d => {
+      const {kolektor} = parseCatatan(d.catatan);
+      if (kolektor && kolektor !== 'Lainnya') kolektorSet.add(kolektor);
+    });
+  });
+  const list = Array.from(kolektorSet).sort();
+
+  // Isi semua dropdown
+  document.querySelectorAll('select[id^="kolektor-"]').forEach(select => {
+    select.innerHTML = `<option value="">-- Pilih Kolektor --</option>`;
+
+    list.forEach(kol => {
+      const opt = document.createElement('option');
+      opt.value = kol;
+      opt.textContent = kol;
+      select.appendChild(opt);
+    });
+
+    // Tambah opsi "Lainnya / Ketik Manual"
+    const other = document.createElement('option');
+    other.value = '__other__';
+    other.textContent = '✏️ Lainnya (ketik manual)';
+    select.appendChild(other);
+  });
+}
+
 function updateEstLunas(i,val){
   const sisaEl=document.getElementById(`sisa-${i}`);
   const tglEl=document.getElementById(`tgl-${i}`);
@@ -1527,7 +2103,22 @@ function praTambah(pokok,a,i){
   const jml=Math.min(50,Math.max(1,parseInt(document.getElementById(`jml-${i}`).value)||1));
   const tenor=parseInt(document.getElementById(`sisa-${i}`).value)||1;
   const tglPengajuan=document.getElementById(`tgl-${i}`).value||todayKey();
-  const cat=document.getElementById(`cat-${i}`).value.trim();
+
+  // Ambil Nama + Kolektor dari field baru
+  const namaInput = document.getElementById(`nama-${i}`).value.trim();
+  let kolektorInput = document.getElementById(`kolektor-${i}`).value;
+
+  if (!namaInput) {
+    toast('Nama nasabah wajib diisi');
+    return;
+  }
+
+  if (kolektorInput === '__other__') {
+    kolektorInput = prompt('Masukkan nama kolektor baru:', '') || 'Lainnya';
+  }
+  if (!kolektorInput) kolektorInput = 'Lainnya';
+
+  const cat = `${namaInput}/${kolektorInput}`;
   const {nama,kolektor}=parseCatatan(cat);
   const today=todayKey();
   const sudahJalan=hitungHariKerja(tglPengajuan,today);
@@ -1598,6 +2189,15 @@ function doTambah(){
 // ════════════════════════════════
 function onSearch(el){q=el.value.toLowerCase();document.getElementById('btnClr').classList.toggle('show',q.length>0);renderRekap()}
 function clearSearch(){q='';document.getElementById('searchInput').value='';document.getElementById('btnClr').classList.remove('show');renderRekap()}
+
+function filterByKolektor(kolektor) {
+  if (activeKolektorFilter === kolektor) {
+    activeKolektorFilter = null; // toggle off
+  } else {
+    activeKolektorFilter = kolektor;
+  }
+  renderRekap();
+}
 
 // ════════════════════════════════
 // ABSENSI SEARCH
@@ -1779,6 +2379,37 @@ function renderRekap(){
     return item;
   });
 
+  // === Render Filter Cepat Kolektor ===
+  const kolektorSet = new Set(allUniq.map(d => parseCatatan(d.catatan).kolektor));
+  const kolektorList = Array.from(kolektorSet).sort();
+  const filterWrap = document.getElementById('kolektorFilterWrap');
+  const chipsContainer = document.getElementById('kolektorFilterChips');
+
+  if (kolektorList.length > 1) {
+    filterWrap.style.display = 'block';
+    chipsContainer.innerHTML = '';
+
+    // Chip "Semua"
+    const allChip = document.createElement('div');
+    allChip.className = `filter-chip ${!activeKolektorFilter ? 'active' : ''}`;
+    allChip.textContent = 'Semua';
+    allChip.onclick = () => {
+      activeKolektorFilter = null;
+      renderRekap();
+    };
+    chipsContainer.appendChild(allChip);
+
+    kolektorList.forEach(kol => {
+      const chip = document.createElement('div');
+      chip.className = `filter-chip ${activeKolektorFilter === kol ? 'active' : ''}`;
+      chip.innerHTML = kol + (activeKolektorFilter === kol ? ' ✕' : '');
+      chip.onclick = () => filterByKolektor(kol);
+      chipsContainer.appendChild(chip);
+    });
+  } else {
+    filterWrap.style.display = 'none';
+  }
+
   // getSisaHariDinamis & getSubTotalDinamis sudah di module level
 
   // Hitung statistik dari data unik dengan sisa dinamis
@@ -1811,16 +2442,22 @@ function renderRekap(){
   document.getElementById('statModal').textContent=rp(totModal);
   document.getElementById('statSetoran').textContent=rp(totSet);
 
-  // Update kas masuk & prepaid
-  const _kasMasuk=hitungKasMasukHariIni();
-  const _prepaid=hitungPrepaid();
-  const elKasR=document.getElementById('statKasMasukRekap');
-  const elPreR=document.getElementById('statPrepaidRekap');
-  if(elKasR)elKasR.textContent=rp(_kasMasuk);
-  if(elPreR)elPreR.textContent=rp(_prepaid);
+  // KAS MASUK & PREPAID dihapus (tidak lagi di-update)
 
-  // Filter untuk list bawah (search)
-  const fil=q?allUniq.filter(d=>{const{nama,kolektor}=parseCatatan(d.catatan);return nama.toLowerCase().includes(q)||kolektor.toLowerCase().includes(q)||(d.catatan||'').toLowerCase().includes(q)}):allUniq;
+  // Filter untuk list bawah (search + kolektor)
+  let fil = allUniq;
+  if (q) {
+    fil = fil.filter(d => {
+      const {nama, kolektor} = parseCatatan(d.catatan);
+      return nama.toLowerCase().includes(q) || kolektor.toLowerCase().includes(q) || (d.catatan || '').toLowerCase().includes(q);
+    });
+  }
+  if (activeKolektorFilter) {
+    fil = fil.filter(d => {
+      const {kolektor} = parseCatatan(d.catatan);
+      return kolektor === activeKolektorFilter;
+    });
+  }
 
   // Grup — pakai allUniq dengan subTotal dinamis
   // allUniq sudah mengandung subTotal & sisaHari dinamis
@@ -1944,7 +2581,10 @@ function renderRekap(){
             </div>
           </div>
         </div>
-        <div class="rekap-item-right"><button class="btn-del" onclick="hapusItem('${tabAsal}',${oi})">✕</button></div>`;
+        <div class="rekap-item-right" style="display:flex;gap:4px;align-items:center">
+          <button class="btn-del" onclick="bukaEditNasabah('${tabAsal}', ${oi}); event.stopImmediatePropagation();">✎</button>
+          <button class="btn-del" onclick="hapusItem('${tabAsal}',${oi})">✕</button>
+        </div>`;
       rFrag.appendChild(el);
     });
     list.appendChild(rFrag);
@@ -2015,8 +2655,377 @@ function buildNasabahList(){
 }
 
 // ════════════════════════════════
+// DETAIL NASABAH (Modal)
+// ════════════════════════════════
+let editNasabahTarget = null; // {tab, index, item}
+
+function bukaEditNasabah(tab, index) {
+  const item = S.data[tab] && S.data[tab][index];
+  if (!item) {
+    toast('Data tidak ditemukan');
+    return;
+  }
+
+  editNasabahTarget = { tab, index, item };
+
+  const {nama, kolektor} = parseCatatan(item.catatan);
+
+  // Isi form
+  document.getElementById('editNama').value = nama || '';
+  document.getElementById('editTglPengajuan').value = item.tglPengajuan || todayKey();
+
+  // Isi dropdown kolektor
+  const select = document.getElementById('editKolektor');
+  select.innerHTML = '';
+
+  // Kumpulkan kolektor
+  const kolektorSet = new Set();
+  S.daftarHari.forEach(h => {
+    (S.data[h]||[]).forEach(d => {
+      const k = parseCatatan(d.catatan).kolektor;
+      if (k && k !== 'Lainnya') kolektorSet.add(k);
+    });
+  });
+
+  Array.from(kolektorSet).sort().forEach(k => {
+    const opt = document.createElement('option');
+    opt.value = k;
+    opt.textContent = k;
+    if (k === kolektor) opt.selected = true;
+    select.appendChild(opt);
+  });
+
+  // Opsi Lainnya
+  const otherOpt = document.createElement('option');
+  otherOpt.value = '__other__';
+  otherOpt.textContent = '✏️ Lainnya (ketik manual)';
+  if (!kolektorSet.has(kolektor)) otherOpt.selected = true;
+  select.appendChild(otherOpt);
+
+  document.getElementById('modalEditNasabah').classList.add('show');
+}
+
+function simpanEditNasabah() {
+  if (!editNasabahTarget) return;
+
+  const { tab, index } = editNasabahTarget;
+  const oldItem = S.data[tab][index];
+
+  const newNama = document.getElementById('editNama').value.trim();
+  let newKolektor = document.getElementById('editKolektor').value;
+  const newTgl = document.getElementById('editTglPengajuan').value;
+
+  if (!newNama) {
+    toast('Nama nasabah tidak boleh kosong');
+    return;
+  }
+
+  if (newKolektor === '__other__') {
+    newKolektor = prompt('Masukkan nama kolektor baru:', '') || 'Lainnya';
+  }
+
+  const oldKey = parseCatatan(oldItem.catatan).nama.toLowerCase();
+  const newCatatan = `${newNama}/${newKolektor}`;
+
+  // Update SEMUA data nasabah dengan nama yang sama di semua hari
+  let updatedCount = 0;
+  S.daftarHari.forEach(h => {
+    if (!S.data[h]) return;
+    S.data[h].forEach(d => {
+      const {nama} = parseCatatan(d.catatan);
+      if (nama.toLowerCase() === oldKey) {
+        d.catatan = newCatatan;
+        if (newTgl) d.tglPengajuan = newTgl;
+        updatedCount++;
+      }
+    });
+  });
+
+  save();
+  tutupModal('modalEditNasabah');
+
+  // Log riwayat perubahan
+  const keyLog = oldKey;
+  if (!S.riwayatPerubahan) S.riwayatPerubahan = {};
+  if (!S.riwayatPerubahan[keyLog]) S.riwayatPerubahan[keyLog] = [];
+  S.riwayatPerubahan[keyLog].unshift({
+    waktu: new Date().toISOString(),
+    jenis: 'Edit Data',
+    detail: `Nama & Kolektor diubah`
+  });
+
+  // Refresh semua tampilan
+  _invalidateCache();
+  renderRekap();
+  renderAbsensi();
+
+  toast(`Data berhasil diperbarui (${updatedCount} entri)`);
+}
+
+function tandaiSemuaHadirKolektor() {
+  const ab = getAb();
+  const nasabahList = buildNasabahList();
+  let count = 0;
+
+  nasabahList.forEach(n => {
+    if (!ab[n.key]) ab[n.key] = { hadir: false, ket: '' };
+    if (!ab[n.key].hadir) {
+      ab[n.key].hadir = true;
+      count++;
+    }
+  });
+
+  if (count > 0) {
+    save();
+    renderAbsensi();
+    updateAbsenHeader();
+    cekReminderBanner();
+    toast(`✅ ${count} nasabah ditandai hadir`);
+  } else {
+    toast('Semua nasabah sudah hadir');
+  }
+}
+
+function prosesTopUpPinjaman() {
+  const namaEl = document.getElementById('detailNama');
+  if (!namaEl) return;
+
+  const nama = namaEl.textContent.replace(/<[^>]*>/g, '').trim();
+  const key = nama.toLowerCase();
+
+  const n = buildNasabahList().find(x => x.key === key);
+  if (!n) {
+    toast('Data nasabah tidak ditemukan');
+    return;
+  }
+
+  const tambahanPokok = parseInt(prompt('Masukkan jumlah top-up pinjaman (Rp):', '100000')) || 0;
+  if (tambahanPokok <= 0) return;
+
+  const tambahanHari = parseInt(prompt('Tambah tenor berapa hari?', '10')) || 0;
+
+  // Update data
+  n.pokok = (n.pokok || 0) + tambahanPokok;
+  n.hari = (n.hari || 0) + tambahanHari;
+
+  // Update semua entri dengan nama yang sama
+  S.daftarHari.forEach(h => {
+    (S.data[h]||[]).forEach(d => {
+      const {nama: dNama} = parseCatatan(d.catatan);
+      if (dNama.toLowerCase() === key) {
+        d.pokok = n.pokok;
+        d.hari = n.hari;
+      }
+    });
+  });
+
+  // Recalculate sisa & subtotal
+  const nomorBayar = getNomorBayarEfektif(key);
+  const newSisaHari = Math.max(0, n.hari - nomorBayar);
+  const a = n.setoranHari || (n.pokok / n.hari);
+
+  S.daftarHari.forEach(h => {
+    (S.data[h]||[]).forEach(d => {
+      const {nama: dNama} = parseCatatan(d.catatan);
+      if (dNama.toLowerCase() === key) {
+        d.sisaHari = newSisaHari;
+        d.subTotal = a * (d.nasabah || 1) * newSisaHari;
+      }
+    });
+  });
+
+  save();
+  _invalidateCache();
+
+  // Log riwayat
+  if (!S.riwayatPerubahan) S.riwayatPerubahan = {};
+  if (!S.riwayatPerubahan[key]) S.riwayatPerubahan[key] = [];
+  S.riwayatPerubahan[key].unshift({
+    waktu: new Date().toISOString(),
+    jenis: 'Top-up Pinjaman',
+    detail: `+Rp ${rp(tambahanPokok)} + ${tambahanHari} hari`
+  });
+
+  tutupModal('modalDetailNasabah');
+  renderRekap();
+  renderAbsensi();
+
+  toast(`✅ Top-up berhasil! Pinjaman ${n.nama} bertambah Rp ${rp(tambahanPokok)}`);
+}
+
+function lihatRiwayatPerubahan() {
+  const namaEl = document.getElementById('detailNama');
+  if (!namaEl) return;
+
+  const nama = namaEl.textContent.replace(/<[^>]*>/g, '').trim();
+  const key = nama.toLowerCase();
+
+  if (!S.riwayatPerubahan || !S.riwayatPerubahan[key] || S.riwayatPerubahan[key].length === 0) {
+    alert('Belum ada riwayat perubahan untuk nasabah ini.');
+    return;
+  }
+
+  let teks = `Riwayat Perubahan - ${nama}\n\n`;
+  S.riwayatPerubahan[key].slice(0, 10).forEach((log, idx) => {
+    const tgl = new Date(log.waktu).toLocaleString('id-ID');
+    teks += `${idx + 1}. [${tgl}] ${log.jenis}\n   ${log.detail}\n\n`;
+  });
+
+  alert(teks);
+}
+
+function prosesPelunasanCepat() {
+  // Ambil data dari modal detail yang sedang terbuka
+  const namaEl = document.getElementById('detailNama');
+  if (!namaEl) return;
+
+  const nama = namaEl.textContent.replace(/<[^>]*>/g, '').trim();
+  if (!nama) {
+    toast('Tidak dapat menemukan data nasabah');
+    return;
+  }
+
+  const key = nama.toLowerCase();
+
+  const n = buildNasabahList().find(x => x.key === key);
+  if (!n) {
+    toast('Data nasabah tidak ditemukan');
+    return;
+  }
+
+  const nomorBayar = getNomorBayarEfektif(key);
+  const sisaHari = Math.max(0, n.hari - nomorBayar);
+  const sisaNominal = sisaHari * n.setoranHari;
+
+  if (sisaHari <= 0) {
+    toast('Nasabah ini sudah lunas');
+    return;
+  }
+
+  const konfirmasi = confirm(
+    `Lunasi lebih cepat untuk ${n.nama}?\n\n` +
+    `Sisa: ${sisaHari} hari\n` +
+    `Total yang harus dibayar: ${rp(sisaNominal)}\n\n` +
+    `Lanjutkan pelunasan?`
+  );
+
+  if (!konfirmasi) return;
+
+  // Lakukan pelunasan: set nomorBayar ke full tenor
+  S.nomorBayar[key] = n.hari;
+
+  // Update semua data terkait
+  S.daftarHari.forEach(h => {
+    (S.data[h]||[]).forEach(d => {
+      const {nama: dNama} = parseCatatan(d.catatan);
+      if (dNama.toLowerCase() === key) {
+        d.sisaHari = 0;
+        d.subTotal = 0;
+      }
+    });
+  });
+
+  save();
+  _invalidateCache();
+
+  // Log riwayat
+  if (!S.riwayatPerubahan) S.riwayatPerubahan = {};
+  if (!S.riwayatPerubahan[key]) S.riwayatPerubahan[key] = [];
+  S.riwayatPerubahan[key].unshift({
+    waktu: new Date().toISOString(),
+    jenis: 'Pelunasan Dipercepat',
+    detail: `Lunas lebih cepat`
+  });
+
+  tutupModal('modalDetailNasabah');
+  renderRekap();
+  renderAbsensi();
+
+  toast(`✅ ${n.nama} berhasil dilunasi lebih cepat!`);
+}
+
+function bukaDetailNasabah(key) {
+  const n = buildNasabahList().find(x => x.key === key);
+  if (!n) {
+    toast('Data nasabah tidak ditemukan');
+    return;
+  }
+
+  const ab = getAb();
+  const abData = ab[key] || { hadir: false, ket: '' };
+  const nomorBayar = getNomorBayarEfektif(key);
+  const nomorHariIni = getNomorHariIni(n.tglPengajuan || todayKey(), n.hari);
+
+  const isKredit = nomorBayar > nomorHariIni && nomorHariIni > 0;
+  const isNunggak = nomorBayar < nomorHariIni && nomorHariIni > 0 && nomorBayar > 0;
+  const sudahBayar = nomorBayar * n.setoranHari;
+  const sisaHari = Math.max(0, n.hari - nomorBayar);
+  const sisaNominal = sisaHari * n.setoranHari;
+
+  // Isi Modal
+  document.getElementById('detailNama').innerHTML = `<b>${n.nama}</b>`;
+  document.getElementById('detailKolektor').innerHTML = `📍 ${n.kolektor}`;
+  document.getElementById('detailTglPengajuan').textContent = n.tglPengajuan ? fmtTgl(n.tglPengajuan) : '-';
+  document.getElementById('detailTenor').textContent = `${n.hari} hari`;
+
+  // Status Badge
+  let statusText = '⏳ Belum Absen';
+  let statusBg = '#fefce8';
+  let statusColor = '#ca8a04';
+
+  if (isKredit) {
+    statusText = '💳 Kredit';
+    statusBg = '#f0fdfa';
+    statusColor = '#0d9488';
+  } else if (isNunggak) {
+    statusText = '🔴 Nunggak';
+    statusBg = '#fef2f2';
+    statusColor = '#dc2626';
+  } else if (abData.hadir) {
+    statusText = '✅ Hadir Hari Ini';
+    statusBg = '#f0fdf4';
+    statusColor = '#16a34a';
+  }
+
+  const statusEl = document.getElementById('detailStatus');
+  statusEl.textContent = statusText;
+  statusEl.style.background = statusBg;
+  statusEl.style.color = statusColor;
+  statusEl.style.border = `1px solid ${statusColor}30`;
+
+  // Nomor Info
+  let nomorHtml = `Hari ini seharusnya <b>No.${nomorHariIni}</b><br>`;
+  if (nomorBayar > 0) {
+    nomorHtml += `Sudah bayar sampai <b>No.${nomorBayar}</b>`;
+  } else {
+    nomorHtml += `<span style="color:#dc2626">Belum ada catatan pembayaran</span>`;
+  }
+  document.getElementById('detailNomorInfo').innerHTML = nomorHtml;
+
+  // Keuangan
+  document.getElementById('detailSudahBayar').textContent = rp(sudahBayar);
+  document.getElementById('detailSisaTagihan').textContent = `${rp(sisaNominal)} (${sisaHari} hari)`;
+
+  // Catatan Khusus
+  if (!S.catatanKhusus) S.catatanKhusus = {};
+  const catatanEl = document.getElementById('detailCatatanKhusus');
+  catatanEl.value = S.catatanKhusus[key] || '';
+
+  // Simpan otomatis saat modal ditutup
+  const modal = document.getElementById('modalDetailNasabah');
+  const saveNote = () => {
+    S.catatanKhusus[key] = catatanEl.value.trim();
+    save();
+    modal.removeEventListener('transitionend', saveNote);
+  };
+  modal.addEventListener('transitionend', saveNote, { once: true });
+
+  // Tampilkan modal
+  modal.classList.add('show');
+}
+
+// ════════════════════════════════
 // HELPER: build satu elemen kartu absensi
-// Dipakai oleh renderAbsensi (full) dan toggleAbsen (partial update)
 // ════════════════════════════════
 function buildAbsenEl(n,ab,bl){
   const abData=ab[n.key]||{hadir:false,ket:''};
@@ -2068,7 +3077,7 @@ function buildAbsenEl(n,ab,bl){
   el.innerHTML=`
     <div class="absen-row1">
       <div class="absen-avatar" style="background:${color}">${initials(n.nama)}</div>
-      <div class="absen-nama">${n.nama}</div>
+      <div class="absen-nama" onclick="event.stopImmediatePropagation(); bukaDetailNasabah('${n.key}')" style="cursor:pointer; text-decoration:underline; text-underline-offset:2px;">${n.nama}</div>
       <div class="absen-setoran">${rp(n.setoranHari)}</div>
       ${isKredit
         ?`<button class="absen-toggle kredit" title="Kredit otomatis" style="font-size:.7rem">✨</button>`
@@ -2120,9 +3129,115 @@ function buildAbsenEl(n,ab,bl){
   return el;
 }
 
+// ═══════════════════════════════════════
+// ABSENSI - GRUP KOLEKTOR CANTIK (SAMA SEPERTI REKAP)
+// ═══════════════════════════════════════
+function renderAbsensiGrupKolektor() {
+  const container = document.getElementById('absenGrupList');
+  if (!container) return;
+
+  const dataHariIni = curData();
+  if (!dataHariIni || dataHariIni.length === 0) {
+    container.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:.8rem;">Belum ada data nasabah hari ini.</div>`;
+    return;
+  }
+
+  const grupMap = buildGrupMap(dataHariIni);
+  const ab = getAb();
+  const bl = getBL();
+  const nasabahAll = buildNasabahList();
+
+  container.innerHTML = '';
+
+  // Sort persis sama seperti Rekap — descending totalSubTotal
+  Object.entries(grupMap).sort((a,b)=>b[1].totalSubTotal-a[1].totalSubTotal).forEach(([kol,g],gi)=>{
+    const color = getColor(kol);
+    const uid = 'agk'+gi;
+
+    // Hitung hadir & terkumpul pakai buildNasabahList (konsisten dengan Absensi)
+    const kolNasabah = nasabahAll.filter(n => n.kolektor === kol);
+    let hadirCount = 0, terkumpul = 0;
+    kolNasabah.forEach(n => {
+      if (n.isHadir) { hadirCount++; terkumpul += n.setoranHari * (bl[n.key]||1); }
+    });
+    const total = kolNasabah.length || g.nasabah.length;
+    const persen = total > 0 ? Math.round((hadirCount / total) * 100) : 0;
+    const barColor = persen>=80?'var(--success)':persen>=40?'var(--warning)':'var(--danger)';
+
+    // Setoran per hari total kolektor ini
+    const setoranHari = g.nasabah.reduce((s,n)=>s+(n.setoranHari||0),0);
+
+    // Baris nasabah dengan checkbox + status badge
+    const nasabahRows = g.nasabah.map(n => {
+      const nData = kolNasabah.find(x=>x.nama===n.nama)||{};
+      const isHadir = nData.isHadir || !!(ab[n.nama.toLowerCase()]?.hadir);
+      const isKredit = nData.isKredit;
+      const isNunggak = nData.adaNunggak;
+      const stCls = isKredit?'kredit':isNunggak?'terlambat':isHadir?'hadir':'belum';
+      const stLabel = isKredit?'✨ Kredit':isNunggak?'🔴 Nunggak':isHadir?'✅ Hadir':'⏳ Belum';
+      return `
+        <div class="grup-nasabah-item" style="align-items:center;gap:8px">
+          <input type="checkbox" ${isHadir ? 'checked' : ''}
+                 onchange="toggleAbsenFromGrup('${n.nama}', this.checked)"
+                 style="width:16px;height:16px;accent-color:#7c3aed;cursor:pointer;flex-shrink:0">
+          <div style="width:26px;height:26px;border-radius:50%;background:${color};display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:800;color:#fff;flex-shrink:0">${initials(n.nama)}</div>
+          <div style="flex:1;min-width:0">
+            <div class="nasabah-nama" style="font-size:.8rem">${n.nama}</div>
+          </div>
+          <div style="font-weight:700;color:var(--success);font-size:.78rem;margin-right:6px">${rp(n.setoranHari||0)}</div>
+          <div class="absen-kol-expand-status ${stCls}">${stLabel}</div>
+        </div>`;
+    }).join('');
+
+    const card = document.createElement('div');
+    card.className = 'grup-card';
+    card.innerHTML = `
+      <div class="grup-header" onclick="(function(hdr){
+        const body=document.getElementById('${uid}');
+        const chev=document.getElementById('chev-${uid}');
+        const open=body.classList.contains('open');
+        body.classList.toggle('open',!open);
+        if(!open){body.style.maxHeight=body.scrollHeight+'px';body.style.borderTopWidth='1px';body.style.paddingTop='6px';body.style.paddingBottom='8px';}
+        else{body.style.maxHeight='0';body.style.borderTopWidth='0';body.style.paddingTop='0';body.style.paddingBottom='0';}
+        chev.classList.toggle('open',!open);
+      })(this)">
+        <div class="grup-dot" style="background:${color}"></div>
+        <div style="flex:1;min-width:0">
+          <div class="grup-name">${kol}</div>
+          <div class="grup-setoran">Setoran/hari: ${rp(setoranHari)}</div>
+        </div>
+        <div class="grup-meta">
+          <div>${total} Nasabah</div>
+          <div class="grup-total">${rp(terkumpul)}</div>
+        </div>
+        <div class="grup-chevron" id="chev-${uid}">▾</div>
+      </div>
+      <div class="grup-body" id="${uid}" style="max-height:0;padding-top:0;padding-bottom:0;border-top:0 solid var(--border);transition:max-height .3s ease,padding .2s,border-top-width .2s">
+        ${nasabahRows}
+      </div>`;
+
+    container.appendChild(card);
+  });
+}
+
+function toggleGrupAbsen(uid, el) {
+  const body = document.getElementById(uid);
+  const chev = document.getElementById('chev-'+uid);
+  if (!body || !chev) return;
+
+  if (body.style.maxHeight && body.style.maxHeight !== '0px') {
+    body.style.maxHeight = '0px';
+    chev.style.transform = 'rotate(0deg)';
+  } else {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    chev.style.transform = 'rotate(180deg)';
+  }
+}
+
 function renderAbsensi(){
   if(activePage!=='Absensi')return;
   renderNunggakAlert();
+  renderAbsensiGrupKolektor();   // ← Grup Kolektor cantik (sama seperti Rekap)
   const ab=getAb();const bl=getBL();
   const nasabahList=buildNasabahList();
   const today=todayKey();
@@ -2167,13 +3282,7 @@ function renderAbsensi(){
   document.getElementById('absenSisa').textContent=rp(totSisa);
   document.getElementById('absenSisaSub').textContent=`${belumList.length} nasabah belum setor`;
 
-  // Update kas masuk & prepaid
-  const _km=hitungKasMasukHariIni();
-  const _pp=hitungPrepaid();
-  const elKasA=document.getElementById('statKasMasukAbsen');
-  const elPreA=document.getElementById('statPrepaidAbsen');
-  if(elKasA)elKasA.textContent=rp(_km);
-  if(elPreA)elPreA.textContent=rp(_pp);
+  // KAS MASUK & PREPAID sudah dihapus
 
   // Progress per kolektor
   const kolMap={};
@@ -2190,6 +3299,7 @@ function renderAbsensi(){
   Object.entries(kolMap).sort((a,b)=>b[1].total-a[1].total).forEach(([kol,k])=>{
     const pct=k.total>0?Math.round(k.hadir/k.total*100):0;
     const color=getColor(kol);
+    const barColor=pct>=80?'var(--success)':pct>=40?'var(--warning)':'var(--danger)';
     const kolNasabah=nasabahList.filter(n=>n.kolektor===kol)
       .sort((a,b)=>{const ra=a.isHadir?(a.isKredit?1:2):0,rb=b.isHadir?(b.isKredit?1:2):0;return ra-rb||a.nama.localeCompare(b.nama);});
     const nasabahRows=kolNasabah.map(n=>{
@@ -2198,21 +3308,30 @@ function renderAbsensi(){
       return `<div class="absen-kol-expand-row">
         <div class="absen-kol-expand-avatar" style="background:${color}">${initials(n.nama)}</div>
         <div class="absen-kol-expand-nama">${n.nama}</div>
-        <div style="font-size:.65rem;color:var(--text-muted);flex-shrink:0;margin-right:4px">${rp(n.setoranHari)}</div>
+        <div class="absen-kol-expand-setoran">${rp(n.setoranHari)}</div>
         <div class="absen-kol-expand-status ${stCls}">${stLabel}</div>
       </div>`;
     }).join('');
-    const el=document.createElement('div');el.className='absen-kol-item';
-    el.innerHTML=`<div style="width:100%">
-      <div style="display:flex;align-items:center;gap:10px" onclick="this.closest('.absen-kol-item').classList.toggle('expanded')">
-        <div class="absen-kol-dot" style="background:${color}"></div>
-        <div class="absen-kol-name">${kol}</div>
-        <div class="absen-kol-progress">${k.hadir}/${k.total} · ${pct}%</div>
-        <div class="absen-kol-total">${rp(k.setTerkumpul)}</div>
+    const el=document.createElement('div');
+    el.className='absen-kol-item';
+    // Gunakan onclick yang toggle class + animasi max-height dinamis
+    el.innerHTML=`
+      <div class="absen-kol-header" onclick="(function(hdr){const item=hdr.closest('.absen-kol-item');item.classList.toggle('expanded');const exp=item.querySelector('.absen-kol-expand');const body=item.querySelector('.absen-kol-expand-body');exp.style.maxHeight=item.classList.contains('expanded')?body.scrollHeight+32+'px':'0';})(this)">
+        <div style="width:9px;height:9px;border-radius:50%;background:${color};flex-shrink:0"></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:.85rem;font-weight:800;color:var(--text)">${kol}</div>
+          <div class="absen-kol-progress-bar-wrap"><div class="absen-kol-progress-bar" style="width:${pct}%;background:${barColor}"></div></div>
+          <div style="font-size:.68rem;font-weight:700;color:${barColor};margin-top:3px">${k.hadir}/${k.total} hadir · ${pct}%</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:.68rem;color:var(--text-muted)">${k.total} Nasabah</div>
+          <div style="font-size:.78rem;font-weight:800;color:var(--success)">${rp(k.setTerkumpul)}</div>
+        </div>
         <div class="absen-kol-chevron">▾</div>
       </div>
-      <div class="absen-kol-expand"><div class="absen-kol-expand-body">${nasabahRows}</div></div>
-    </div>`;
+      <div class="absen-kol-expand" style="max-height:0">
+        <div class="absen-kol-expand-body">${nasabahRows}</div>
+      </div>`;
     kolEl.appendChild(el);
   });
 
@@ -2302,10 +3421,7 @@ function updateAbsenHeader(){
   if(el_ts)el_ts.textContent=`dari ${hadirList.length} nasabah hadir`;
   if(el_s)el_s.textContent=rp(sisa);
   if(el_ss)el_ss.textContent=`${belumList.length} nasabah belum setor`;
-  const elKasA=document.getElementById('statKasMasukAbsen');
-  const elPreA=document.getElementById('statPrepaidAbsen');
-  if(elKasA)elKasA.textContent=rp(hitungKasMasukHariIni());
-  if(elPreA)elPreA.textContent=rp(hitungPrepaid());
+  // KAS MASUK & PREPAID sudah dihapus
   const kolMap={};
   nasabahList.forEach(n=>{
     if(!kolMap[n.kolektor])kolMap[n.kolektor]={total:0,hadir:0,setTerkumpul:0,setTotal:0};
@@ -2398,8 +3514,57 @@ function bukaNomorBayar(key,nama,tenor,nomorHariIni,tglPengajuan){
   document.getElementById('bayarKaliSub').innerHTML=`
     <b>${nama}</b><br>
     <span style="font-size:.75rem;color:var(--text-muted)">Tenor: ${tenor} hari &nbsp;·&nbsp; Hari ini: No.<b style="color:var(--primary)">${nomorHariIni}</b> · 📅 <b style="color:var(--primary)">${tglHariIni}</b></span>`;
-  const grid=document.getElementById('kaliGrid');
-  grid.innerHTML='';
+
+  const grid = document.getElementById('kaliGrid');
+  grid.innerHTML = '';
+
+  // Hapus quick buttons lama jika ada (mencegah duplikasi)
+  const oldQuick = document.getElementById('quickBayarKaliActions');
+  if (oldQuick) oldQuick.remove();
+
+  // === Quick Action Buttons (UI rapi & efisien) ===
+  const quickWrap = document.createElement('div');
+  quickWrap.id = 'quickBayarKaliActions';
+  quickWrap.style.cssText = `display:flex;gap:8px;margin:8px 0 12px;flex-wrap:wrap;justify-content:center`;
+  quickWrap.innerHTML = `
+    <button class="btn-quick" style="padding:6px 14px;border-radius:9999px;border:1.5px solid var(--border);background:var(--card-bg);font-size:.75rem;font-weight:700;color:var(--text);cursor:pointer;transition:all .15s;" data-action="today">Hari Ini</button>
+    <button class="btn-quick" style="padding:6px 14px;border-radius:9999px;border:1.5px solid #a7f3d0;background:#dcfce7;font-size:.75rem;font-weight:700;color:#166534;cursor:pointer;transition:all .15s;" data-action="+1">+1</button>
+    <button class="btn-quick" style="padding:6px 14px;border-radius:9999px;border:1.5px solid #a7f3d0;background:#dcfce7;font-size:.75rem;font-weight:700;color:#166534;cursor:pointer;transition:all .15s;" data-action="+2">+2</button>
+    <button class="btn-quick" style="padding:6px 14px;border-radius:9999px;border:1.5px solid #a7f3d0;background:#dcfce7;font-size:.75rem;font-weight:700;color:#166534;cursor:pointer;transition:all .15s;" data-action="+3">+3</button>
+  `;
+  grid.parentNode.insertBefore(quickWrap, grid);
+
+  // Attach quick button events
+  quickWrap.querySelectorAll('.btn-quick').forEach(btn => {
+    btn.onclick = () => {
+      const action = btn.dataset.action;
+      let target = bayarKaliSelected;
+
+      if (action === 'today') target = nomorHariIni;
+      else if (action === '+1') target = Math.min(tenor, bayarKaliSelected + 1);
+      else if (action === '+2') target = Math.min(tenor, bayarKaliSelected + 2);
+      else if (action === '+3') target = Math.min(tenor, bayarKaliSelected + 3);
+
+      bayarKaliSelected = Math.max(0, target);
+
+      // Re-render selection
+      grid.querySelectorAll('.nomor-option').forEach((o, idx) => {
+        if (idx === 0) {
+          o.style.border = '2px solid var(--border)';
+          o.style.background = 'var(--slate-light)';
+          o.style.color = 'var(--text-muted)';
+        } else {
+          const num = idx;
+          const isSel = num === bayarKaliSelected;
+          const isPast = num < nomorHariIni;
+          const isToday = num === nomorHariIni;
+          o.style.border = `2px solid ${isSel ? 'var(--primary)' : isPast ? 'var(--border)' : isToday ? 'var(--primary)' : '#a7f3d0'}`;
+          o.style.background = isSel ? 'var(--primary)' : isPast ? 'var(--slate-light)' : isToday ? 'var(--primary-light)' : 'var(--success-light)';
+          o.style.color = isSel ? '#fff' : isPast ? 'var(--text-muted)' : isToday ? 'var(--primary)' : 'var(--success)';
+        }
+      });
+    };
+  });
 
   // ── Opsi "Belum Bayar Sama Sekali" (nilai 0) ──
   const optBelum=document.createElement('div');
@@ -3831,31 +4996,48 @@ function attachSwipe(el){
     const key=el.dataset.key;
     const nama=el.dataset.nama;
     if(dx>THRESHOLD){
-      // Swipe kanan → Toggle hadir (skip jika kredit otomatis)
-      const ab=getAb();
-      const _nb=getNomorBayarEfektif(key);
-      const _nh=getNomorHariIni((()=>{const nl=buildNasabahList();const nx=nl.find(x=>x.key===key);return nx?.tglPengajuan||todayKey()})(),buildNasabahList().find(x=>x.key===key)?.hari||0);
-      if(_nb>_nh&&_nh>0){toast('✨ Nasabah ini sudah kredit otomatis');return;} // isKredit
-      if(!ab[key])ab[key]={hadir:false,ket:''};
-      ab[key].hadir=!ab[key].hadir;
-      save();
-      const nasabahList=buildNasabahList();
-      const n=nasabahList.find(x=>x.key===key);
-      if(n){
-        const bl=getBL();const today=todayKey();
-        n.nomorHariIni=getNomorHariIni(n.tglPengajuan||today,n.hari);
-        n.nomorBayar=getNomorBayarEfektif(n.key);
-        n.hasNomorBayarSet=n.key in S.nomorBayar;
-        n.isHadir=!!(ab[n.key]?.hadir)||(n.hasNomorBayarSet&&n.nomorBayar>=n.nomorHariIni&&n.nomorHariIni>0)||false;
-        n.isKredit=n.hasNomorBayarSet&&n.nomorBayar>n.nomorHariIni&&n.nomorHariIni>0;
-        n.kreditSisa=n.isKredit?n.nomorBayar-n.nomorHariIni:0;
-        el.replaceWith(buildAbsenEl(n,ab,bl));
-        updateAbsenHeader();renderRekap();cekReminderBanner();
+      // === Swipe Kanan → Toggle Hadir + Smart Nomor Picker ===
+      const ab = getAb();
+      const _nb = getNomorBayarEfektif(key);
+      const nl = buildNasabahList();
+      const nData = nl.find(x => x.key === key);
+      if (!nData) return;
+
+      const _nh = getNomorHariIni(nData.tglPengajuan || todayKey(), nData.hari);
+
+      // Guard kredit otomatis
+      if (_nb > _nh && _nh > 0) {
+        toast('✨ Nasabah ini sudah kredit otomatis');
+        return;
       }
-      toast(ab[key]?.hadir?`✅ ${nama} — Hadir`:`○ ${nama} — Belum`);
-    }else if(dx<-THRESHOLD){
+
+      if (!ab[key]) ab[key] = { hadir: false, ket: '' };
+      const wasHadir = ab[key].hadir;
+      ab[key].hadir = !ab[key].hadir;
+
+      _invalidateCache();
+      save();
+
+      // === Setelah ditandai HADIR → Langsung buka modal nomor angsuran (lebih efisien) ===
+      if (ab[key].hadir && !wasHadir) {
+        setTimeout(() => {
+          bukaNomorBayar(key, nData.nama, nData.hari, _nh, nData.tglPengajuan);
+        }, 280);
+        toast(`✅ ${nama} — Hadir. Silakan konfirmasi / update nomor angsuran.`);
+      } else {
+        toast(ab[key].hadir ? `✅ ${nama} — Hadir` : `○ ${nama} — Belum`);
+      }
+
+      // Full re-render
+      requestAnimationFrame(() => {
+        renderAbsensi();
+        renderRekap();
+        updateAbsenHeader();
+      });
+
+    } else if (dx < -THRESHOLD) {
       // Swipe kiri → Buka keterangan
-      bukaKet(key,nama);
+      bukaKet(key, nama);
     }
   },{passive:true});
 }
