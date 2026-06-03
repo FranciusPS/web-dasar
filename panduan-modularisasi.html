@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panduan Modularisasi — Rekap Angsuran</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Sora:wght@400;600;700;800&display=swap');
+
+  :root {
+    --ink: #0f0a1a;
+    --bg: #f8f6ff;
+    --card: #fff;
+    --purple: #6d28d9;
+    --purple-light: #ede9fe;
+    --teal: #0d9488;
+    --teal-light: #ccfbf1;
+    --amber: #b45309;
+    --amber-light: #fef3c7;
+    --rose: #be185d;
+    --rose-light: #fce7f3;
+    --green: #15803d;
+    --green-light: #dcfce7;
+    --blue: #1d4ed8;
+    --blue-light: #dbeafe;
+    --slate: #475569;
+    --border: #ddd6fe;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Sora', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .hero {
+    background: linear-gradient(135deg, #1e0a3c 0%, #4c1d95 50%, #6d28d9 100%);
+    padding: 56px 24px 48px;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(167,139,250,0.25) 0%, transparent 70%);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .hero h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    line-height: 1.2;
+    position: relative;
+  }
+  .hero p {
+    font-size: .95rem;
+    opacity: .7;
+    margin-top: 10px;
+    position: relative;
+  }
+  .file-stats {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .file-stat {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 10px 18px;
+    text-align: center;
+  }
+  .file-stat-val { font-size: 1.4rem; font-weight: 800; }
+  .file-stat-lbl { font-size: .65rem; opacity: .6; text-transform: uppercase; letter-spacing: .08em; }
+
+  /* ── LAYOUT ── */
+  .content { max-width: 900px; margin: 0 auto; padding: 40px 20px 60px; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 52px; }
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--purple);
+    color: #fff;
+    font-size: .85rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title { font-size: 1.2rem; font-weight: 800; color: var(--ink); }
+  .section-sub { font-size: .8rem; color: var(--slate); margin-top: 2px; }
+
+  /* ── STRUCTURE TREE ── */
+  .tree {
+    background: var(--ink);
+    border-radius: 16px;
+    padding: 24px 28px;
+    font-family: var(--mono);
+    font-size: .8rem;
+    line-height: 2;
+    overflow-x: auto;
+    color: #e2e8f0;
+  }
+  .tree-folder { color: #a78bfa; font-weight: 700; }
+  .tree-file { color: #6ee7b7; }
+  .tree-file-css { color: #67e8f9; }
+  .tree-file-js { color: #fde68a; }
+  .tree-file-html { color: #f9a8d4; }
+  .tree-comment { color: #64748b; font-style: italic; }
+  .tree-indent { display: inline-block; width: 20px; }
+
+  /* ── MODULE CARDS ── */
+  .module-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .module-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    transition: box-shadow .2s, transform .2s;
+  }
+  .module-card:hover { box-shadow: 0 8px 28px rgba(109,40,217,.12); transform: translateY(-2px); }
+  .module-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .module-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .module-name { font-size: .88rem; font-weight: 800; }
+  .module-path { font-size: .65rem; color: var(--slate); font-family: var(--mono); margin-top: 1px; }
+  .module-desc { font-size: .78rem; color: var(--slate); line-height: 1.5; margin-bottom: 10px; }
+  .module-fns {
+    display: flex; flex-wrap: wrap; gap: 5px;
+  }
+  .fn-chip {
+    font-family: var(--mono);
+    font-size: .6rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: var(--purple-light);
+    color: var(--purple);
+    border: 1px solid #c4b5fd;
+  }
+  .fn-chip.css { background: #cffafe; color: #0e7490; border-color: #a5f3fc; }
+  .fn-chip.html { background: var(--rose-light); color: var(--rose); border-color: #fbcfe8; }
+
+  /* ── DEPENDENCY DIAGRAM ── */
+  .dep-diagram {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    overflow-x: auto;
+  }
+  .dep-grid {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr 40px 1fr;
+    gap: 0;
+    align-items: center;
+    min-width: 560px;
+  }
+  .dep-col { display: flex; flex-direction: column; gap: 8px; }
+  .dep-box {
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: .72rem;
+    font-weight: 700;
+    text-align: center;
+    border: 1.5px solid;
+  }
+  .dep-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: var(--slate);
+    flex-direction: column;
+    gap: 6px;
+  }
+  .dep-arrow-label { font-size: .55rem; color: var(--slate); font-family: var(--mono); }
+
+  /* ── STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 20px;
+    position: relative;
+    padding-bottom: 32px;
+  }
+  .step:last-child { padding-bottom: 0; }
+  .step-left { display: flex; flex-direction: column; align-items: center; }
+  .step-num {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--purple);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .step-line {
+    width: 2px;
+    flex: 1;
+    background: linear-gradient(to bottom, var(--purple), var(--border));
+    margin-top: 6px;
+  }
+  .step:last-child .step-line { display: none; }
+  .step-body { padding-top: 10px; }
+  .step-title { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
+  .step-desc { font-size: .82rem; color: var(--slate); margin-bottom: 12px; line-height: 1.6; }
+
+  /* ── CODE BLOCKS ── */
+  .code {
+    background: var(--ink);
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-family: var(--mono);
+    font-size: .75rem;
+    line-height: 1.8;
+    color: #e2e8f0;
+    overflow-x: auto;
+    margin: 10px 0;
+  }
+  .code .kw { color: #c4b5fd; } /* keyword */
+  .code .str { color: #6ee7b7; } /* string */
+  .code .cmt { color: #64748b; } /* comment */
+  .code .fn { color: #fde68a; } /* function */
+  .code .tag { color: #f9a8d4; } /* html tag */
+  .code .attr { color: #67e8f9; } /* attribute */
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: .82rem;
+    line-height: 1.6;
+    margin: 12px 0;
+    display: flex;
+    gap: 12px;
+  }
+  .callout-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+  .callout-body strong { font-weight: 800; display: block; margin-bottom: 3px; }
+  .callout.tip { background: var(--green-light); border: 1.5px solid #bbf7d0; color: #14532d; }
+  .callout.warn { background: var(--amber-light); border: 1.5px solid #fde68a; color: #78350f; }
+  .callout.info { background: var(--blue-light); border: 1.5px solid #bfdbfe; color: #1e3a8a; }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+  th { background: var(--purple-light); color: var(--purple); font-weight: 800; padding: 10px 14px; text-align: left; }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: .65rem;
+    font-weight: 700;
+  }
+
+  /* Colors */
+  .bg-purple { background: var(--purple-light); border-color: #c4b5fd; color: var(--purple); }
+  .bg-teal { background: var(--teal-light); border-color: #5eead4; color: var(--teal); }
+  .bg-amber { background: var(--amber-light); border-color: #fde68a; color: var(--amber); }
+  .bg-rose { background: var(--rose-light); border-color: #fbcfe8; color: var(--rose); }
+  .bg-green { background: var(--green-light); border-color: #bbf7d0; color: var(--green); }
+  .bg-blue { background: var(--blue-light); border-color: #bfdbfe; color: var(--blue); }
+
+  /* Nav TOC */
+  .toc {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+  }
+  .toc-title { font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: var(--slate); margin-bottom: 12px; }
+  .toc-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .toc-list a { text-decoration: none; color: var(--ink); font-size: .85rem; font-weight: 600; display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+  .toc-list a:hover { color: var(--purple); }
+  .toc-num { font-family: var(--mono); font-size: .7rem; color: var(--purple); font-weight: 800; width: 20px; }
+
+  hr { border: none; border-top: 2px dashed var(--border); margin: 48px 0; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">📐 Arsitektur &amp; Refactoring</div>
+  <h1>Panduan Modularisasi<br>Rekap Angsuran</h1>
+  <p>Single-file HTML → Struktur Multi-file yang bersih dan maintainable</p>
+  <div class="file-stats">
+    <div class="file-stat"><div class="file-stat-val">5.199</div><div class="file-stat-lbl">Total Baris</div></div>
+    <div class="file-stat"><div class="file-stat-val">~850</div><div class="file-stat-lbl">Baris CSS</div></div>
+    <div class="file-stat"><div class="file-stat-val">~350</div><div class="file-stat-lbl">Baris HTML</div></div>
+    <div class="file-stat"><div class="file-stat-val">~4.000</div><div class="file-stat-lbl">Baris JS</div></div>
+    <div class="file-stat"><div class="file-stat-val">9</div><div class="file-stat-lbl">Modul JS</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">Daftar Isi</div>
+    <ul class="toc-list">
+      <li><a href="#s1"><span class="toc-num">01</span> Analisis Struktur File Asli</a></li>
+      <li><a href="#s2"><span class="toc-num">02</span> Skema Struktur Folder Baru</a></li>
+      <li><a href="#s3"><span class="toc-num">03</span> Peta Modul JavaScript</a></li>
+      <li><a href="#s4"><span class="toc-num">04</span> Diagram Dependensi Antar Modul</a></li>
+      <li><a href="#s5"><span class="toc-num">05</span> Tahapan Migrasi Step-by-Step</a></li>
+      <li><a href="#s6"><span class="toc-num">06</span> Tabel Mapping Fungsi ke Modul</a></li>
+      <li><a href="#s7"><span class="toc-num">07</span> Panduan Instruksi untuk Agent AI (Opsi 1–4)</a></li>
+    </ul>
+  </div>
+
+  <!-- ── 1. ANALISIS ── -->
+  <div class="section" id="s1">
+    <div class="section-head">
+      <div class="section-num">01</div>
+      <div>
+        <div class="section-title">Analisis Struktur File Asli</div>
+        <div class="section-sub">Apa yang ada di dalam index_html_final_bak.html</div>
+      </div>
+    </div>
+
+    <p style="font-size:.85rem;color:var(--slate);margin-bottom:16px;">File saat ini mencampur tiga jenis konten dalam satu file. Ini membuatnya sulit di-maintain, di-debug, dan di-kolaborasikan.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:24px">
+      <div class="callout tip" style="margin:0">
+        <div class="callout-icon">🎨</div>
+        <div class="callout-body">
+          <strong>CSS — Baris 27–843</strong>
+          ~850 baris styling: variabel tema, komponen, dark mode, animasi splash, layout semua halaman.
+        </div>
+      </div>
+      <div class="callout info" style="margin:0">
+        <div class="callout-icon">🏗️</div>
+        <div class="callout-body">
+          <strong>HTML — Baris 845–1441</strong>
+          ~350 baris markup: splash screen, header, 4 halaman (Rekap, Absensi, Milestone, Settings), 8+ modal, bottom nav.
+        </div>
+      </div>
+      <div class="callout warn" style="margin:0">
+        <div class="callout-icon">⚙️</div>
+        <div class="callout-body">
+          <strong>JavaScript — Baris 1442–5196</strong>
+          ~3.700 baris logika: state, storage, helpers, 9 fitur utama, render functions, event handlers.
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body">
+        <strong>Masalah utama single-file ini:</strong>
+        Sulit scroll untuk menemukan bug · Tidak bisa parallel edit · Git diff berantakan · CSS global bisa konflik · Semua fungsi di scope global (polusi namespace) · Tidak ada pemisahan concern yang jelas.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 2. STRUKTUR FOLDER ── -->
+  <div class="section" id="s2">
+    <div class="section-head">
+      <div class="section-num">02</div>
+      <div>
+        <div class="section-title">Skema Struktur Folder Baru</div>
+        <div class="section-sub">Organisasi file yang direkomendasikan</div>
+      </div>
+    </div>
+
+    <div class="tree">
+<span class="tree-folder">rekap-angsuran/</span>
+├── <span class="tree-file-html">index.html</span>          <span class="tree-comment">← shell utama (tulang, tanpa logika)</span>
+│
+├── <span class="tree-folder">css/</span>
+│   ├── <span class="tree-file-css">variables.css</span>     <span class="tree-comment">← CSS custom properties (tema, warna)</span>
+│   ├── <span class="tree-file-css">base.css</span>          <span class="tree-comment">← reset, body, typography</span>
+│   ├── <span class="tree-file-css">components.css</span>    <span class="tree-comment">← .card, .btn, .modal, .badge</span>
+│   ├── <span class="tree-file-css">layout.css</span>        <span class="tree-comment">← header, nav, page, splash</span>
+│   └── <span class="tree-file-css">pages.css</span>         <span class="tree-comment">← .absen-*, .mile-*, .rekap-*, .tier-*</span>
+│
+├── <span class="tree-folder">js/</span>
+│   ├── <span class="tree-file-js">config.js</span>          <span class="tree-comment">← TIERS, GRUP_COLORS, konstanta</span>
+│   ├── <span class="tree-file-js">state.js</span>           <span class="tree-comment">← objek S, save(), load(), migrasi</span>
+│   ├── <span class="tree-file-js">helpers.js</span>         <span class="tree-comment">← rp(), fmtTgl(), todayKey(), isLibur()</span>
+│   ├── <span class="tree-file-js">tabs.js</span>            <span class="tree-comment">← renderTabs(), gantiHari(), ensureTodayTab()</span>
+│   ├── <span class="tree-file-js">rekap.js</span>           <span class="tree-comment">← renderRekap(), renderInput(), praTambah()</span>
+│   ├── <span class="tree-file-js">absensi.js</span>         <span class="tree-comment">← renderAbsensi(), toggleAbsen(), popover</span>
+│   ├── <span class="tree-file-js">milestone.js</span>       <span class="tree-comment">← renderMilestone(), tandaiLunas()</span>
+│   ├── <span class="tree-file-js">settings.js</span>        <span class="tree-comment">← renderSettings(), libur, tab manager</span>
+│   ├── <span class="tree-file-js">export-import.js</span>   <span class="tree-comment">← exportData(), doImport(), readFile()</span>
+│   └── <span class="tree-file-js">app.js</span>             <span class="tree-comment">← init, goPage(), toggleDark(), window.onload</span>
+│
+└── <span class="tree-folder">html/</span>                  <span class="tree-comment">← (opsional, jika ingin pisahkan template)</span>
+    ├── <span class="tree-file-html">modals.html</span>       <span class="tree-comment">← semua &lt;div class="modal-overlay"&gt;</span>
+    └── <span class="tree-file-html">pages.html</span>        <span class="tree-comment">← pageRekap, pageAbsensi, dll</span>
+    </div>
+
+    <div class="callout tip" style="margin-top:16px">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <strong>Pilihan pragmatis:</strong>
+        Folder <code>html/</code> bersifat opsional. Jika tidak ingin setup build tool (bundler), cukup pisahkan <strong>CSS dan JS</strong> saja — HTML tetap di <code>index.html</code>. Ini adalah pendekatan paling mudah tanpa kehilangan manfaat utama.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3. PETA MODUL ── -->
+  <div class="section" id="s3">
+    <div class="section-head">
+      <div class="section-num">03</div>
+      <div>
+        <div class="section-title">Peta Modul JavaScript</div>
+        <div class="section-sub">Isi dan tanggung jawab tiap file JS</div>
+      </div>
+    </div>
+
+    <div class="module-grid">
+
+      <div class="module-card">
+        <div class="module-card-head">
+          <div class="module-icon bg-amber">🔧</div>
+          <div>
+            <div class="module-name">config.js</div>
+            <div class="module-path">js/config.js</div>
+          </div>
+        </div>
+        <div class="module-desc">Konstanta global yang tidak berubah. Tidak ada fungsi, hanya deklarasi.</div>
+        <div class="module-fns">
+          <span class="fn-chip">TIERS</span>
+          <span class="fn-chip">GRUP_COLORS</span>
+          <span class="fn-chip">SK · DK</span>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-card-head">
+          <div class="module-icon bg-rose">🗃️</div>
+          <div>
+            <div class="module-name">state.js</div>
+            <div class="module-path">js/state.js</div>
+          </div>
+        </div>
+        <div class="module-desc">Sumber kebenaran tunggal. Objek state S, semua I/O ke localStorage.</div>
+        <div class="module-fns">
+          <span class="fn-chip">S = {...}</span>
+          <span class="fn-chip">save()</span>
+          <span class="fn-chip">saveNow()</span>
+          <span class="fn-chip">load()</span>
+          <span class="fn-chip">migrasi</span>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-card-head">
+          <div class="module-icon bg-blue">🛠️</div>
+          <div>
+            <div class="module-name">helpers.js</div>
+            <div class="module-path">js/helpers.js</div>
+          </div>
+        </div>
+        <div class="module-desc">Pure functions tanpa side effect. Bisa diunit-test tanpa DOM.</div>
+        <div class="module-fns">
+          <span class="fn-chip">rp()</span>
+          <span class="fn-chip">todayKey()</span>
+          <span class="fn-chip">fmtTgl()</span>
+          <span class="fn-chip">isLibur()</span>
+          <span class="fn-chip">hitungHariKerja()</span>
+          <span class="fn-chip">tambahHariKerja()</span>
+          <span class="fn-chip">parseCatatan()</span>
+          <span class="fn-chip">getColor()</span>
+          <span class="fn-chip">initials()</span>
+          <span class="fn-chip">parseDate()</span>
+          <span class="fn-chip">toast()</span>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-card-head">
+          <div class="module-icon bg-teal">📋</div>
+          <div>
+            <div class="module-name">tabs.js</div>
+            <div class="module-path">js/tabs.js</div>
+          </div>
+        </div>
+        <div class="module-desc">Manajemen tab hari. Berpindah hari, membuat tab baru, menyimpan draft.</div>
+        <div class="module-fns">
+          <span class="fn-chip">renderTabs()</span>
+          <span class="fn-chip">gantiHari()</span>
+          <span class="fn-chip">ensureTodayTab()</span>
+          <span class="fn-chip">labelTab()</span>
+          <span class="fn-chip">saveInputDraft()</span>
+          <span class="fn-chip">restoreInputDraft()</span>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-card-head">
+          <div class="module-icon bg-purple">📊</div>
+          <div>
+            <div class="module-name">rekap.js</div>
+            <div class="module-path">js/rekap.js</div>
+          </div>
+        </div>
+        <div class="module-desc">Halaman Rekap: input nasabah baru, tabel rekapitulasi, search, filter kolektor.</div>
+        <div class="module-fns">
+          <span class="fn-chip">renderRekap()</span>
+          <span class="fn-chip">renderInput()</span>
+          <span class="fn-chip">praTambah()</span>
+          <span class="fn-chip">doTambah()</span>
+          <span class="fn-chip">hapusItem()</span>
+          <span class="fn-chip">onSearch()</span>
+          <span class="fn-chip">step()</span>
+          <span class="fn-chip">buildNasabahList()</span>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-card-head">
+          <div class="module-icon bg-green">✅</div>
+          <div>
+            <div class="module-name">absensi.js</div>
+            <div class="module-path">js/absensi.js</div>
+          </div>
+        </div>
+        <div class="module-desc">Halaman Absensi: toggle hadir, filter, nunggak alert, popover info, drag-drop.</div>
+        <div class="module-fns">
+          <span class="fn-chip">renderAbsensi()</span>
+          <span class="fn-chip">toggleAbsen()</span>
+          <span class="fn-chip">hadirSemua()</span>
+          <span class="fn-chip">filterAbsen()</span>
+          <span class="fn-chip">tampilNomorPopover()</span>
+          <span class="fn-chip">getNomorHariIni()</span>
+          <span class="fn-chip">initDragDrop()</span>
+          <span class="fn-chip">cekReminderBanner()</span>
+          <span class="fn-chip">bukaTutupHari()</span>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-card-head">
+          <div class="module-icon bg-amber">🎯</div>
+          <div>
+            <div class="module-name">milestone.js</div>
+            <div class="module-path">js/milestone.js</div>
+          </div>
+        </div>
+        <div class="module-desc">Halaman Milestone: progress pelunasan, tandai lunas, estimasi selesai.</div>
+        <div class="module-fns">
+          <span class="fn-chip">renderMilestone()</span>
+          <span class="fn-chip">tandaiLunas()</span>
+          <span class="fn-chip">bukaRiwayatBayar()</span>
+          <span class="fn-chip">bukaPerbarui()</span>
+          <span class="fn-chip">doPerbarui()</span>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-card-head">
+          <div class="module-icon bg-rose">⚙️</div>
+          <div>
+            <div class="module-name">settings.js</div>
+            <div class="module-path">js/settings.js</div>
+          </div>
+        </div>
+        <div class="module-desc">Halaman Settings: manajemen libur, tab manager, target harian, catatan nasabah.</div>
+        <div class="module-fns">
+          <span class="fn-chip">renderLiburList()</span>
+          <span class="fn-chip">renderTabManager()</span>
+          <span class="fn-chip">simpanLibur()</span>
+          <span class="fn-chip">hapusLibur()</span>
+          <span class="fn-chip">hapusTab()</span>
+          <span class="fn-chip">simpanTarget()</span>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-card-head">
+          <div class="module-icon bg-teal">📦</div>
+          <div>
+            <div class="module-name">export-import.js</div>
+            <div class="module-path">js/export-import.js</div>
+          </div>
+        </div>
+        <div class="module-desc">Export ke JSON/CSV dan import dari file. Termasuk preview data sebelum import.</div>
+        <div class="module-fns">
+          <span class="fn-chip">exportData()</span>
+          <span class="fn-chip">bukaExport()</span>
+          <span class="fn-chip">bukaImport()</span>
+          <span class="fn-chip">readFile()</span>
+          <span class="fn-chip">doImport()</span>
+          <span class="fn-chip">salinLaporan()</span>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-card-head">
+          <div class="module-icon bg-purple">🚀</div>
+          <div>
+            <div class="module-name">app.js</div>
+            <div class="module-path">js/app.js</div>
+          </div>
+        </div>
+        <div class="module-desc">Entry point. Init splash, navigasi halaman, dark mode, scroll buttons, beforeunload.</div>
+        <div class="module-fns">
+          <span class="fn-chip">goPage()</span>
+          <span class="fn-chip">toggleDark()</span>
+          <span class="fn-chip">initSplash()</span>
+          <span class="fn-chip">window.onload</span>
+          <span class="fn-chip">beforeunload</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 4. DIAGRAM DEPENDENSI ── -->
+  <div class="section" id="s4">
+    <div class="section-head">
+      <div class="section-num">04</div>
+      <div>
+        <div class="section-title">Diagram Dependensi Antar Modul</div>
+        <div class="section-sub">Modul mana bergantung ke mana (urutan &lt;script&gt; penting!)</div>
+      </div>
+    </div>
+
+    <div class="dep-diagram">
+      <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--slate);margin-bottom:16px">Alur dependensi (kiri = dimuat lebih dulu)</div>
+      <div class="dep-grid">
+        <!-- Kolom 1: Fondasi -->
+        <div class="dep-col">
+          <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--slate);margin-bottom:8px;text-align:center">Layer 1<br>Fondasi</div>
+          <div class="dep-box bg-amber" style="text-align:center;font-size:.75rem">⚙️ config.js</div>
+          <div class="dep-box bg-rose" style="text-align:center;font-size:.75rem">🗃️ state.js</div>
+          <div class="dep-box bg-blue" style="text-align:center;font-size:.75rem">🛠️ helpers.js</div>
+        </div>
+        <!-- Arrow 1 -->
+        <div class="dep-arrow">
+          <span>→</span>
+          <span class="dep-arrow-label">dipakai oleh</span>
+        </div>
+        <!-- Kolom 2: Fitur -->
+        <div class="dep-col">
+          <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--slate);margin-bottom:8px;text-align:center">Layer 2<br>Fitur</div>
+          <div class="dep-box bg-teal" style="text-align:center;font-size:.75rem">📋 tabs.js</div>
+          <div class="dep-box bg-purple" style="text-align:center;font-size:.75rem">📊 rekap.js</div>
+          <div class="dep-box bg-green" style="text-align:center;font-size:.75rem">✅ absensi.js</div>
+          <div class="dep-box bg-amber" style="text-align:center;font-size:.75rem">🎯 milestone.js</div>
+          <div class="dep-box bg-rose" style="text-align:center;font-size:.75rem">⚙️ settings.js</div>
+          <div class="dep-box bg-teal" style="text-align:center;font-size:.75rem">📦 export-import.js</div>
+        </div>
+        <!-- Arrow 2 -->
+        <div class="dep-arrow">
+          <span>→</span>
+          <span class="dep-arrow-label">diatur oleh</span>
+        </div>
+        <!-- Kolom 3: App -->
+        <div class="dep-col">
+          <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--slate);margin-bottom:8px;text-align:center">Layer 3<br>Orchestrator</div>
+          <div class="dep-box bg-purple" style="text-align:center;font-size:.75rem">🚀 app.js</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="code" style="margin-top:20px">
+<span class="cmt">&lt;!-- Urutan &lt;script&gt; di index.html — HARUS berurutan seperti ini --&gt;</span>
+
+<span class="cmt">&lt;!-- Layer 1: Fondasi (tidak bergantung pada modul lain) --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/config.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/helpers.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/state.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+
+<span class="cmt">&lt;!-- Layer 2: Fitur (bergantung pada Layer 1) --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/tabs.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/rekap.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/absensi.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/milestone.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/settings.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/export-import.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+
+<span class="cmt">&lt;!-- Layer 3: Orchestrator (dimuat paling akhir) --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/app.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body">
+        <strong>Semua variabel masih global!</strong>
+        Dengan pendekatan multi-file + script tag biasa, semua variabel tetap berada di scope <code>window</code> (global). Ini aman untuk proyek ini, namun jika ingin isolasi penuh, gunakan ES Modules dengan <code>type="module"</code> dan refactor ke <code>import/export</code>.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 5. TAHAPAN ── -->
+  <div class="section" id="s5">
+    <div class="section-head">
+      <div class="section-num">05</div>
+      <div>
+        <div class="section-title">Tahapan Migrasi Step-by-Step</div>
+        <div class="section-sub">Cara aman memecah file tanpa merusak fungsionalitas</div>
+      </div>
+    </div>
+
+    <div class="steps">
+
+      <!-- Step 1 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">1</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Buat Struktur Folder</div>
+          <div class="step-desc">Buat folder <code>css/</code> dan <code>js/</code> di samping <code>index.html</code>. Buat semua file kosong terlebih dulu.</div>
+          <div class="code">mkdir css js
+touch css/variables.css css/base.css css/components.css css/layout.css css/pages.css
+touch js/config.js js/helpers.js js/state.js js/tabs.js
+touch js/rekap.js js/absensi.js js/milestone.js js/settings.js
+touch js/export-import.js js/app.js</div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">2</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Pisahkan CSS ke 5 File</div>
+          <div class="step-desc">Buka <code>index_html_final_bak.html</code>, ambil semua isi di dalam tag <code>&lt;style&gt;</code> (baris 27–843), lalu distribusikan ke file CSS.</div>
+          <div style="overflow-x:auto">
+          <table>
+            <tr><th>File CSS</th><th>Konten yang dipindah</th><th>Baris Asli (perkiraan)</th></tr>
+            <tr><td><span class="badge bg-blue">variables.css</span></td><td>Semua <code>:root { --... }</code> dan <code>[data-theme="dark"] { --... }</code></td><td>27–78</td></tr>
+            <tr><td><span class="badge bg-blue">base.css</span></td><td><code>*, body</code>, font, global reset</td><td>79–88</td></tr>
+            <tr><td><span class="badge bg-blue">layout.css</span></td><td><code>#splash</code>, <code>.app-header</code>, <code>.hari-tabs</code>, <code>.bottom-nav</code>, <code>.page</code>, <code>.container</code></td><td>91–185</td></tr>
+            <tr><td><span class="badge bg-blue">components.css</span></td><td><code>.card</code>, <code>.btn-*</code>, <code>.modal-*</code>, <code>.search-*</code>, <code>.toast</code>, <code>.summary-*</code>, <code>.scroll-btn</code></td><td>188–470</td></tr>
+            <tr><td><span class="badge bg-blue">pages.css</span></td><td><code>.absen-*</code>, <code>.nunggak-*</code>, <code>.mile-*</code>, <code>.rekap-*</code>, <code>.tier-*</code>, <code>.nomor-popover</code>, <code>.stat-bar-*</code></td><td>471–843</td></tr>
+          </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">3</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Perbarui &lt;head&gt; index.html</div>
+          <div class="step-desc">Hapus blok <code>&lt;style&gt;...&lt;/style&gt;</code> dari <code>index.html</code>, ganti dengan link ke file CSS. Urutan <strong>penting</strong>: variables harus pertama.</div>
+          <div class="code"><span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span> <span class="attr">href</span>=<span class="str">"css/variables.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span> <span class="attr">href</span>=<span class="str">"css/base.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span> <span class="attr">href</span>=<span class="str">"css/layout.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span> <span class="attr">href</span>=<span class="str">"css/components.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span> <span class="attr">href</span>=<span class="str">"css/pages.css"</span><span class="tag">&gt;</span></div>
+          <div class="callout tip">
+            <div class="callout-icon">✅</div>
+            <div class="callout-body"><strong>Cek pertama:</strong> Buka di browser. Tampilan harus identik dengan file asli. Jika ada yang rusak, berarti ada CSS yang terpisah di tempat salah.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">4</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Pisahkan JavaScript — Mulai dari Fondasi</div>
+          <div class="step-desc">Ambil isi dari dalam <code>&lt;script&gt;</code> (baris 1442–5196). Pisahkan dimulai dari modul yang paling tidak bergantung ke modul lain.</div>
+
+          <div class="callout info">
+            <div class="callout-icon">🔍</div>
+            <div class="callout-body">
+              <strong>Strategi bottom-up:</strong> Mulai dari <code>config.js</code> (tidak bergantung siapapun) → <code>helpers.js</code> (pure functions) → <code>state.js</code> → lanjut ke modul fitur.
+            </div>
+          </div>
+
+          <div class="code"><span class="cmt">// js/config.js — hanya konstanta</span>
+<span class="kw">const</span> <span class="fn">TIERS</span> = [<span class="str">100000</span>, <span class="str">200000</span>, <span class="str">300000</span>, <span class="str">400000</span>, <span class="str">500000</span>];
+<span class="kw">const</span> <span class="fn">GRUP_COLORS</span> = [<span class="str">'#3b82f6'</span>, <span class="str">'#8b5cf6'</span>, ...];
+<span class="kw">const</span> <span class="fn">SK</span> = <span class="str">'rekap_v7'</span>, <span class="fn">DK</span> = <span class="str">'rekap_dark'</span>;</div>
+
+          <div class="code"><span class="cmt">// js/helpers.js — pure functions, tidak ada akses DOM/state</span>
+<span class="kw">const</span> <span class="fn">rp</span> = n => <span class="str">'Rp '</span> + Math.round(n).toLocaleString(<span class="str">'id-ID'</span>);
+<span class="kw">const</span> <span class="fn">toDateStr</span> = d => { ... };
+<span class="kw">function</span> <span class="fn">todayKey</span>() { ... }
+<span class="kw">function</span> <span class="fn">parseDate</span>(s) { ... }
+<span class="kw">function</span> <span class="fn">isLibur</span>(dateStr) { ... }   <span class="cmt">// akses S.hariLibur — pindah ke state.js? atau tetap di sini</span>
+<span class="kw">function</span> <span class="fn">fmtTgl</span>(dateStr) { ... }
+<span class="kw">function</span> <span class="fn">parseCatatan</span>(cat) { ... }
+<span class="kw">function</span> <span class="fn">toast</span>(msg) { ... }
+<span class="kw">function</span> <span class="fn">tutupModal</span>(id) { ... }</div>
+
+          <div class="code"><span class="cmt">// js/state.js — state global dan storage</span>
+<span class="kw">let</span> <span class="fn">S</span> = { hariAktif: <span class="fn">todayKey</span>(), daftarHari: [...], ... };
+<span class="kw">let</span> <span class="fn">pending</span>=<span class="kw">null</span>, <span class="fn">imported</span>=<span class="kw">null</span>, <span class="fn">q</span>=<span class="str">''</span>, <span class="fn">activePage</span>=<span class="str">'Rekap'</span>;
+<span class="kw">function</span> <span class="fn">save</span>(immediate=<span class="kw">false</span>) { ... }
+<span class="kw">function</span> <span class="fn">load</span>() { ... }</div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">5</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Pisahkan Modul Fitur (satu per satu)</div>
+          <div class="step-desc">Pindahkan setiap kelompok fungsi ke file-nya. Lakukan <strong>satu modul sekaligus</strong>, lalu test di browser sebelum lanjut ke modul berikutnya.</div>
+
+          <div class="callout warn">
+            <div class="callout-icon">🎯</div>
+            <div class="callout-body">
+              <strong>Tips penting:</strong> Jangan pindahkan semua sekaligus. Pindah satu modul → buka browser → cek konsol error → baru lanjut ke modul berikutnya. Ini mempermudah debugging jika ada fungsi yang terlewat.
+            </div>
+          </div>
+
+          <div style="overflow-x:auto">
+          <table>
+            <tr><th>Urutan</th><th>Modul</th><th>Cara Cek Berhasil</th></tr>
+            <tr><td><span class="badge bg-amber">1</span></td><td>tabs.js</td><td>Klik tab hari bisa berpindah tanpa error</td></tr>
+            <tr><td><span class="badge bg-purple">2</span></td><td>rekap.js</td><td>Tambah nasabah baru, tabel muncul</td></tr>
+            <tr><td><span class="badge bg-green">3</span></td><td>absensi.js</td><td>Toggle hadir/belum berfungsi</td></tr>
+            <tr><td><span class="badge bg-amber">4</span></td><td>milestone.js</td><td>Progress bar muncul, tandai lunas berfungsi</td></tr>
+            <tr><td><span class="badge bg-rose">5</span></td><td>settings.js</td><td>Tambah/hapus libur berfungsi</td></tr>
+            <tr><td><span class="badge bg-teal">6</span></td><td>export-import.js</td><td>Export JSON/CSV berhasil diunduh</td></tr>
+            <tr><td><span class="badge bg-purple">7</span></td><td>app.js</td><td>Splash screen muncul, dark mode toggle OK</td></tr>
+          </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">6</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Perbarui &lt;body&gt; index.html — Tambah Script Tags</div>
+          <div class="step-desc">Hapus blok <code>&lt;script&gt;...&lt;/script&gt;</code> yang panjang, ganti dengan 10 baris script tag. Taruh tepat sebelum <code>&lt;/body&gt;</code>.</div>
+          <div class="code"><span class="cmt">&lt;!-- Taruh di paling bawah, sebelum &lt;/body&gt; --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/config.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/helpers.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/state.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/tabs.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/rekap.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/absensi.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/milestone.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/settings.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/export-import.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"js/app.js"</span><span class="tag">&gt;&lt;/script&gt;</span></div>
+          <div class="callout tip">
+            <div class="callout-icon">✅</div>
+            <div class="callout-body"><strong>Cek akhir:</strong> Buka browser, cek Console (F12). Harus 0 error. Test semua fitur: tambah nasabah, absensi, milestone, export, import, dark mode, ganti tab.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">7</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">(Opsional) Catatan Penting untuk Buka di Browser Lokal</div>
+          <div class="step-desc">Browser tidak bisa load file JS lokal dengan <code>file://</code> karena CORS policy. Ada dua cara mudah:</div>
+          <div class="code"><span class="cmt"># Cara 1: Python (paling mudah, sudah ada di semua OS)</span>
+python -m http.server 8080
+<span class="cmt"># Buka: http://localhost:8080</span>
+
+<span class="cmt"># Cara 2: VS Code Extension "Live Server"</span>
+<span class="cmt"># Install extension → klik kanan index.html → "Open with Live Server"</span>
+
+<span class="cmt"># Cara 3: Node.js (jika sudah install)</span>
+npx serve .</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 6. MAPPING TABEL ── -->
+  <div class="section" id="s6">
+    <div class="section-head">
+      <div class="section-num">06</div>
+      <div>
+        <div class="section-title">Tabel Mapping Fungsi ke Modul</div>
+        <div class="section-sub">Referensi cepat: fungsi ada di file mana</div>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto">
+    <table>
+      <tr><th>Fungsi / Variabel</th><th>Modul Tujuan</th><th>Catatan</th></tr>
+      <tr><td><code>TIERS, GRUP_COLORS, SK, DK</code></td><td><span class="badge bg-amber">config.js</span></td><td>Hanya konstanta</td></tr>
+      <tr><td><code>S, pending, q, activePage, ...</code></td><td><span class="badge bg-rose">state.js</span></td><td>State mutable global</td></tr>
+      <tr><td><code>save(), saveNow(), load()</code></td><td><span class="badge bg-rose">state.js</span></td><td>I/O localStorage</td></tr>
+      <tr><td><code>toDateStr(), todayKey(), parseDate()</code></td><td><span class="badge bg-blue">helpers.js</span></td><td>Pure function</td></tr>
+      <tr><td><code>isLibur(), hitungHariKerja(), tambahHariKerja()</code></td><td><span class="badge bg-blue">helpers.js</span></td><td>Mengakses S.hariLibur</td></tr>
+      <tr><td><code>fmtTgl(), parseCatatan(), getColor(), initials()</code></td><td><span class="badge bg-blue">helpers.js</span></td><td>Pure function</td></tr>
+      <tr><td><code>rp(), aph(), nowStr(), toast()</code></td><td><span class="badge bg-blue">helpers.js</span></td><td>Utility kecil</td></tr>
+      <tr><td><code>tutupModal(), overlayClose()</code></td><td><span class="badge bg-blue">helpers.js</span></td><td>DOM helper umum</td></tr>
+      <tr><td><code>renderTabs(), gantiHari(), ensureTodayTab()</code></td><td><span class="badge bg-teal">tabs.js</span></td><td></td></tr>
+      <tr><td><code>saveInputDraft(), restoreInputDraft()</code></td><td><span class="badge bg-teal">tabs.js</span></td><td></td></tr>
+      <tr><td><code>renderInput(), renderRekap(), buildNasabahList()</code></td><td><span class="badge bg-purple">rekap.js</span></td><td></td></tr>
+      <tr><td><code>praTambah(), doTambah(), hapusItem()</code></td><td><span class="badge bg-purple">rekap.js</span></td><td></td></tr>
+      <tr><td><code>onSearch(), clearSearch(), step()</code></td><td><span class="badge bg-purple">rekap.js</span></td><td></td></tr>
+      <tr><td><code>renderAbsensi(), toggleAbsen(), hadirSemua()</code></td><td><span class="badge bg-green">absensi.js</span></td><td></td></tr>
+      <tr><td><code>filterAbsen(), tampilNomorPopover(), initDragDrop()</code></td><td><span class="badge bg-green">absensi.js</span></td><td></td></tr>
+      <tr><td><code>cekReminderBanner(), getBelumAbsenList()</code></td><td><span class="badge bg-green">absensi.js</span></td><td></td></tr>
+      <tr><td><code>getNomorHariIni(), getNomorBayarEfektif()</code></td><td><span class="badge bg-green">absensi.js</span></td><td>Atau helpers.js jika dipakai banyak modul</td></tr>
+      <tr><td><code>renderMilestone(), tandaiLunas()</code></td><td><span class="badge bg-amber">milestone.js</span></td><td></td></tr>
+      <tr><td><code>bukaPerbarui(), doPerbarui(), bukaRiwayatBayar()</code></td><td><span class="badge bg-amber">milestone.js</span></td><td></td></tr>
+      <tr><td><code>renderLiburList(), simpanLibur(), hapusLibur()</code></td><td><span class="badge bg-rose">settings.js</span></td><td></td></tr>
+      <tr><td><code>renderTabManager(), hapusTab()</code></td><td><span class="badge bg-rose">settings.js</span></td><td></td></tr>
+      <tr><td><code>exportData(), bukaExport(), bukaImport()</code></td><td><span class="badge bg-teal">export-import.js</span></td><td></td></tr>
+      <tr><td><code>readFile(), doImport(), salinLaporan()</code></td><td><span class="badge bg-teal">export-import.js</span></td><td></td></tr>
+      <tr><td><code>goPage(), toggleDark(), initSplash()</code></td><td><span class="badge bg-purple">app.js</span></td><td></td></tr>
+      <tr><td><code>window.onload, window.beforeunload</code></td><td><span class="badge bg-purple">app.js</span></td><td>Entry point terakhir</td></tr>
+    </table>
+    </div>
+
+    <hr>
+
+    <div class="callout tip">
+      <div class="callout-icon">🏁</div>
+      <div class="callout-body">
+        <strong>Hasil akhir yang diharapkan:</strong>
+        index.html menjadi ~200 baris (HTML murni) · 5 file CSS masing-masing &lt;200 baris · 10 file JS masing-masing &lt;500 baris · Mudah di-debug, mudah ditemukan, mudah dikembangkan tim.
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ── 7. PANDUAN AGENT AI ── -->
+  <div class="section" id="s7">
+    <div class="section-head">
+      <div class="section-num">07</div>
+      <div>
+        <div class="section-title">Panduan Instruksi untuk Agent AI</div>
+        <div class="section-sub">4 opsi prompt siap pakai — pilih sesuai kebutuhan dan kemampuan agent</div>
+      </div>
+    </div>
+
+    <p style="font-size:.85rem;color:var(--slate);margin-bottom:20px;">
+      Setiap opsi dirancang untuk skenario berbeda. Semakin tinggi nomornya, semakin detail konteks yang diberikan ke agent — menghasilkan output yang lebih presisi namun membutuhkan lebih banyak token.
+    </p>
+
+    <!-- Opsi comparison bar -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:28px">
+      <div style="background:var(--green-light);border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;text-align:center">
+        <div style="font-size:1.4rem;margin-bottom:4px">⚡</div>
+        <div style="font-size:.75rem;font-weight:800;color:var(--green)">Opsi 1</div>
+        <div style="font-size:.65rem;color:var(--slate);margin-top:3px">Minimal<br>~50 token</div>
+      </div>
+      <div style="background:var(--blue-light);border:1.5px solid #bfdbfe;border-radius:12px;padding:12px;text-align:center">
+        <div style="font-size:1.4rem;margin-bottom:4px">📋</div>
+        <div style="font-size:.75rem;font-weight:800;color:var(--blue)">Opsi 2</div>
+        <div style="font-size:.65rem;color:var(--slate);margin-top:3px">Standar<br>~200 token</div>
+      </div>
+      <div style="background:var(--amber-light);border:1.5px solid #fde68a;border-radius:12px;padding:12px;text-align:center">
+        <div style="font-size:1.4rem;margin-bottom:4px">🔬</div>
+        <div style="font-size:.75rem;font-weight:800;color:var(--amber)">Opsi 3</div>
+        <div style="font-size:.65rem;color:var(--slate);margin-top:3px">Detail<br>~500 token</div>
+      </div>
+      <div style="background:var(--rose-light);border:1.5px solid #fbcfe8;border-radius:12px;padding:12px;text-align:center">
+        <div style="font-size:1.4rem;margin-bottom:4px">🤖</div>
+        <div style="font-size:.75rem;font-weight:800;color:var(--rose)">Opsi 4</div>
+        <div style="font-size:.65rem;color:var(--slate);margin-top:3px">Full Context<br>~1.000 token</div>
+      </div>
+    </div>
+
+    <!-- ═══ OPSI 1 ═══ -->
+    <div style="border:2px solid #bbf7d0;border-radius:16px;overflow:hidden;margin-bottom:20px">
+      <div style="background:var(--green-light);padding:14px 20px;display:flex;align-items:center;gap:12px">
+        <div style="width:32px;height:32px;border-radius:8px;background:var(--green);color:#fff;font-size:.85rem;font-weight:800;display:flex;align-items:center;justify-content:center">1</div>
+        <div>
+          <div style="font-size:.95rem;font-weight:800;color:var(--green)">Opsi 1 — Minimal (Quick Task)</div>
+          <div style="font-size:.72rem;color:var(--slate);margin-top:2px">Cocok untuk: agent dengan context window besar yang sudah membaca file sumber · Claude Code · Aider</div>
+        </div>
+        <div style="margin-left:auto"><span class="badge bg-green">Paling singkat</span></div>
+      </div>
+      <div style="padding:18px 20px;background:var(--card)">
+        <div style="font-size:.78rem;color:var(--slate);margin-bottom:10px;font-weight:700">📌 Kapan dipakai:</div>
+        <p style="font-size:.8rem;color:var(--slate);margin-bottom:14px">Agent sudah membaca file HTML lengkap. Cukup beri perintah + lampirkan file. Agent cerdas akan menyimpulkan strukturnya sendiri.</p>
+        <div style="font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--slate);margin-bottom:8px">📝 Template Prompt:</div>
+        <div class="code" style="position:relative">
+<span class="cmt"># Lampirkan: index_html_final_bak.html</span>
+<span class="cmt"># Lampirkan: panduan-modularisasi.html (dokumen ini)</span>
+
+Pecah file HTML terlampir menjadi struktur multi-file
+sesuai panduan modularisasi yang disertakan.
+Hasilkan semua file output lengkap dan siap pakai.
+        </div>
+        <div class="callout warn" style="margin-top:12px">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-body"><strong>Risiko:</strong> Agent mungkin membuat keputusan sendiri tentang penempatan fungsi yang ambigu. Cocok jika Anda siap review hasilnya.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ OPSI 2 ═══ -->
+    <div style="border:2px solid #bfdbfe;border-radius:16px;overflow:hidden;margin-bottom:20px">
+      <div style="background:var(--blue-light);padding:14px 20px;display:flex;align-items:center;gap:12px">
+        <div style="width:32px;height:32px;border-radius:8px;background:var(--blue);color:#fff;font-size:.85rem;font-weight:800;display:flex;align-items:center;justify-content:center">2</div>
+        <div>
+          <div style="font-size:.95rem;font-weight:800;color:var(--blue)">Opsi 2 — Standar (Recommended)</div>
+          <div style="font-size:.72rem;color:var(--slate);margin-top:2px">Cocok untuk: kebanyakan agent AI · ChatGPT · Gemini · Claude.ai</div>
+        </div>
+        <div style="margin-left:auto"><span class="badge bg-blue">Direkomendasikan</span></div>
+      </div>
+      <div style="padding:18px 20px;background:var(--card)">
+        <div style="font-size:.78rem;color:var(--slate);margin-bottom:10px;font-weight:700">📌 Kapan dipakai:</div>
+        <p style="font-size:.8rem;color:var(--slate);margin-bottom:14px">Menyertakan konteks struktur target dan urutan eksekusi. Meminimalkan ambiguitas tanpa terlalu panjang.</p>
+        <div style="font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--slate);margin-bottom:8px">📝 Template Prompt:</div>
+        <div class="code">
+<span class="cmt"># Lampirkan: index_html_final_bak.html</span>
+
+Kamu adalah refactoring agent. Tugasmu memecah file HTML
+single-page (terlampir) menjadi struktur multi-file berikut:
+
+<span class="str">STRUKTUR TARGET:</span>
+  css/variables.css   → semua :root { --var } dan [data-theme="dark"]
+  css/base.css        → reset, body, font
+  css/layout.css      → splash, header, nav, page, container
+  css/components.css  → card, btn, modal, search, toast
+  css/pages.css       → absen-*, mile-*, rekap-*, tier-*, nomor-popover
+
+  js/config.js        → TIERS, GRUP_COLORS, SK, DK
+  js/helpers.js       → pure functions: rp, fmtTgl, todayKey, parseDate,
+                        isLibur, parseCatatan, toast, tutupModal
+  js/state.js         → objek S, save(), load(), migrasi data
+  js/tabs.js          → renderTabs, gantiHari, ensureTodayTab, draft input
+  js/rekap.js         → renderRekap, renderInput, praTambah, doTambah
+  js/absensi.js       → renderAbsensi, toggleAbsen, popover, dragdrop
+  js/milestone.js     → renderMilestone, tandaiLunas, doPerbarui
+  js/settings.js      → renderLiburList, renderTabManager, simpanLibur
+  js/export-import.js → exportData, doImport, readFile, salinLaporan
+  js/app.js           → goPage, toggleDark, initSplash, window.onload
+
+  index.html          → HTML murni, link ke semua CSS dan JS di atas
+
+<span class="str">ATURAN:</span>
+- Jangan ubah logika atau nama fungsi apapun
+- Semua variabel tetap global (bukan ES Module)
+- Script tag di index.html harus berurutan: config → helpers → state
+  → tabs → rekap → absensi → milestone → settings → export-import → app
+- Hasilkan setiap file lengkap dan siap pakai
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ OPSI 3 ═══ -->
+    <div style="border:2px solid #fde68a;border-radius:16px;overflow:hidden;margin-bottom:20px">
+      <div style="background:var(--amber-light);padding:14px 20px;display:flex;align-items:center;gap:12px">
+        <div style="width:32px;height:32px;border-radius:8px;background:var(--amber);color:#fff;font-size:.85rem;font-weight:800;display:flex;align-items:center;justify-content:center">3</div>
+        <div>
+          <div style="font-size:.95rem;font-weight:800;color:var(--amber)">Opsi 3 — Detail (Presisi Tinggi)</div>
+          <div style="font-size:.72rem;color:var(--slate);margin-top:2px">Cocok untuk: agent yang sering salah penempatan fungsi · task automation · CI pipeline</div>
+        </div>
+        <div style="margin-left:auto"><span class="badge bg-amber">Paling presisi</span></div>
+      </div>
+      <div style="padding:18px 20px;background:var(--card)">
+        <div style="font-size:.78rem;color:var(--slate);margin-bottom:10px;font-weight:700">📌 Kapan dipakai:</div>
+        <p style="font-size:.8rem;color:var(--slate);margin-bottom:14px">Menambahkan peta fungsi eksplisit dan penanganan kasus tepi (fungsi lintas modul). Cocok jika agent pernah keliru menempatkan fungsi.</p>
+        <div style="font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--slate);margin-bottom:8px">📝 Template Prompt:</div>
+        <div class="code">
+<span class="cmt"># Lampirkan: index_html_final_bak.html</span>
+
+Kamu adalah refactoring agent. Pecah file HTML terlampir
+menjadi 15 file terpisah. Ikuti mapping berikut PERSIS:
+
+<span class="str">== CSS MAPPING (dari blok &lt;style&gt; baris 27–843) ==</span>
+variables.css : semua :root{} dan [data-theme="dark"]{}
+base.css      : selector * dan body{}
+layout.css    : #splash, .app-header, .hari-tabs-wrap,
+                .bottom-nav, .page, .container
+components.css: .card, .btn-*, .modal-*, .search-*,
+                .toast, .summary-*, .scroll-btn, .badge,
+                .reminder-banner, .import-*, .drop-*,
+                .laporan-text, .riwayat-*
+pages.css     : .absen-*, .nunggak-*, .mile-*, .rekap-*,
+                .tier-*, .nomor-popover, .stat-bar-*,
+                .kali-modal-*, .perbarui-*, .filter-chip,
+                .section-wrap, .section-title
+
+<span class="str">== JS MAPPING (dari blok &lt;script&gt; baris 1442–5196) ==</span>
+config.js        : const TIERS, GRUP_COLORS, SK, DK
+helpers.js       : toDateStr, todayKey, labelTab, parseDate,
+                   isLibur, hitungHariKerja, tambahHariKerja,
+                   fmtTgl, parseCatatan, _pcCache, _hkCache,
+                   _thkCache, _clearHariKerjaCache, rp, aph,
+                   nowStr, curData, getColor, initials,
+                   toast, tutupModal, overlayClose,
+                   absenKey, getAb, getLunas, getBL,
+                   getNomorBayarEfektif, sudahBayarHariIni
+state.js         : let S={...}, pending, imported, q, absenQ,
+                   absenFilter, activeKolektorFilter, activePage,
+                   ketTarget, bayarKaliTarget, bayarKaliSelected,
+                   _saveTimer, _nasabahCache, _nasabahCacheKey,
+                   _getNasabahCacheKey, _invalidateCache,
+                   save(), saveNow(), load()
+tabs.js          : saveInputDraft, restoreInputDraft,
+                   renderTabs, gantiHari, ensureTodayTab
+rekap.js         : renderInput, step, updateEstLunas,
+                   praTambah, doTambah, hapusItem,
+                   buildNasabahList, renderRekap,
+                   onSearch, clearSearch, copyTotal,
+                   initDragDrop (jika ada di rekap)
+absensi.js       : getNomorHariIni, renderAbsensi,
+                   toggleAbsen, simpanKet, hadirSemua,
+                   resetAbsensi, filterAbsen, onAbsenSearch,
+                   clearAbsenSearch, setBayarKali, doSetNomor,
+                   tampilNomorPopover, tutupNomorPopover,
+                   tandaiSemuaHadirKolektor, toggleNunggakPanel,
+                   toggleStatMingguan, cekReminderBanner,
+                   tutupReminder, startReminderInterval,
+                   getBelumAbsenList, cekBelumAbsen,
+                   bukaTutupHari, initDragDrop
+milestone.js     : renderMilestone, tandaiLunas,
+                   bukaRiwayatBayar, bukaPerbarui,
+                   perbaruiStepTenor, updatePerbaruiSummary,
+                   doPerbarui
+settings.js      : renderLiburList, simpanLibur, hapusLibur,
+                   renderTabManager, hapusTab, tambahHariManual,
+                   updateToggleStyle, simpanTarget,
+                   simpanCatatan
+export-import.js : exportData, exportDataDariTutup,
+                   bukaExport, bukaImport, readFile,
+                   doImport, bukaSalinLaporan,
+                   salinLaporanDariTutup, resetAbsensiDariTutup
+app.js           : toggleDark, goPage, initSplash,
+                   window.onload, window.beforeunload,
+                   updateScrollBtns
+
+<span class="str">ATURAN KERAS:</span>
+1. JANGAN ubah nama fungsi, nama variabel, atau logika apapun
+2. JANGAN konversi ke ES Module — semua tetap global scope
+3. Urutan &lt;script&gt; di index.html: config → helpers → state
+   → tabs → rekap → absensi → milestone → settings
+   → export-import → app
+4. Tailwind config tetap inline di index.html (bukan file terpisah)
+5. Setelah selesai, tampilkan daftar file yang dihasilkan beserta
+   jumlah baris masing-masing sebagai verifikasi
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ OPSI 4 ═══ -->
+    <div style="border:2px solid #fbcfe8;border-radius:16px;overflow:hidden;margin-bottom:20px">
+      <div style="background:var(--rose-light);padding:14px 20px;display:flex;align-items:center;gap:12px">
+        <div style="width:32px;height:32px;border-radius:8px;background:var(--rose);color:#fff;font-size:.85rem;font-weight:800;display:flex;align-items:center;justify-content:center">4</div>
+        <div>
+          <div style="font-size:.95rem;font-weight:800;color:var(--rose)">Opsi 4 — Full Context (Agent Otonom)</div>
+          <div style="font-size:.72rem;color:var(--slate);margin-top:2px">Cocok untuk: agent otonom multi-step · Claude Code dengan tools · Cursor · Copilot Workspace</div>
+        </div>
+        <div style="margin-left:auto"><span class="badge bg-rose">Paling lengkap</span></div>
+      </div>
+      <div style="padding:18px 20px;background:var(--card)">
+        <div style="font-size:.78rem;color:var(--slate);margin-bottom:10px;font-weight:700">📌 Kapan dipakai:</div>
+        <p style="font-size:.8rem;color:var(--slate);margin-bottom:14px">Agent diberi konteks penuh termasuk tujuan bisnis, constraint teknis, dan instruksi verifikasi otomatis. Dirancang agar agent bisa bekerja tanpa supervisi manusia.</p>
+        <div style="font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--slate);margin-bottom:8px">📝 Template Prompt:</div>
+        <div class="code">
+<span class="cmt"># Lampirkan: index_html_final_bak.html</span>
+<span class="cmt"># Agent ini akan membuat file, menulis kode, dan memverifikasi</span>
+
+<span class="str">== KONTEKS PROYEK ==</span>
+Nama: Rekap Angsuran v5.0
+Deskripsi: Aplikasi web PWA untuk manajemen angsuran nasabah.
+           Berjalan 100% di browser, data di localStorage.
+Stack: HTML + Vanilla JS + Tailwind CDN + CSS Variables
+Target: Multi-file tanpa build tool (tidak ada bundler/npm)
+
+<span class="str">== MISI ==</span>
+Baca file index_html_final_bak.html (terlampir).
+Pecah menjadi 15 file terpisah menggunakan struktur dan
+mapping yang sudah didefinisikan di Opsi 3 di atas.
+
+<span class="str">== CONSTRAINT TEKNIS ==</span>
+- Tidak ada ES Modules (tidak ada import/export)
+- Semua fungsi tetap di window scope (global)
+- Tidak ada perubahan logika, hanya memindahkan kode
+- CSS custom properties (--var) HARUS di variables.css
+  agar tersedia untuk semua file CSS lain
+- Tailwind config (tailwind.config = {...}) tetap inline
+  di index.html karena butuh dieksekusi sebelum rendering
+- Script di-load synchronous (bukan async/defer) untuk
+  menjaga urutan eksekusi yang benar
+
+<span class="str">== LANGKAH EKSEKUSI ==</span>
+Lakukan langkah berikut secara berurutan:
+
+LANGKAH 1 — Buat struktur folder:
+  Buat direktori: css/ dan js/
+
+LANGKAH 2 — Ekstrak dan tulis CSS (5 file):
+  Tulis variables.css, base.css, layout.css,
+  components.css, pages.css
+
+LANGKAH 3 — Ekstrak dan tulis JS (10 file):
+  Tulis dalam urutan: config.js, helpers.js, state.js,
+  tabs.js, rekap.js, absensi.js, milestone.js,
+  settings.js, export-import.js, app.js
+
+LANGKAH 4 — Tulis ulang index.html:
+  Pertahankan semua HTML markup, ganti &lt;style&gt; dengan
+  5 link tag CSS, ganti &lt;script&gt; besar dengan 10 script
+  tag JS (urutan sesuai Layer diagram)
+
+LANGKAH 5 — Verifikasi mandiri:
+  Hitung total baris semua file output.
+  Total harus ≈ 5199 baris (boleh ±2% karena whitespace).
+  Pastikan tidak ada fungsi yang hilang atau terduplikasi.
+  Laporkan hasil verifikasi dalam format tabel.
+
+<span class="str">== FORMAT OUTPUT ==</span>
+Untuk setiap file, tulis dengan format:
+  --- FILE: path/nama-file.ext ---
+  [isi file]
+  --- END: path/nama-file.ext ---
+
+Di akhir, tampilkan ringkasan:
+  | File | Baris | Status |
+  |------|-------|--------|
+  | ... | ... | ✅ |
+        </div>
+        <div class="callout tip" style="margin-top:12px">
+          <div class="callout-icon">🤖</div>
+          <div class="callout-body">
+            <strong>Tips untuk Claude Code / Cursor:</strong>
+            Ganti bagian "FORMAT OUTPUT" dengan: <em>"Buat langsung file ke filesystem menggunakan tools yang tersedia. Jalankan <code>python -m http.server 8080</code> untuk verifikasi akhir."</em>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparison Table -->
+    <hr>
+    <div style="font-size:.8rem;font-weight:800;margin-bottom:12px;color:var(--ink)">📊 Perbandingan Keempat Opsi</div>
+    <div style="overflow-x:auto">
+    <table>
+      <tr>
+        <th>Opsi</th>
+        <th>Panjang Prompt</th>
+        <th>Cocok Untuk</th>
+        <th>Risiko Kesalahan</th>
+        <th>Perlu Review?</th>
+      </tr>
+      <tr>
+        <td><span class="badge bg-green">Opsi 1</span> Minimal</td>
+        <td>~50 token</td>
+        <td>Claude Code, Aider, agent dengan file access</td>
+        <td style="color:var(--amber)">Sedang — agent bebas interpretasi</td>
+        <td>✅ Ya, wajib</td>
+      </tr>
+      <tr>
+        <td><span class="badge bg-blue">Opsi 2</span> Standar</td>
+        <td>~200 token</td>
+        <td>ChatGPT, Claude.ai, Gemini</td>
+        <td style="color:var(--green)">Rendah — struktur sudah jelas</td>
+        <td>🔍 Spot check</td>
+      </tr>
+      <tr>
+        <td><span class="badge bg-amber">Opsi 3</span> Detail</td>
+        <td>~500 token</td>
+        <td>Agent yang sering keliru, CI pipeline</td>
+        <td style="color:var(--green)">Sangat rendah</td>
+        <td>⚡ Minimal</td>
+      </tr>
+      <tr>
+        <td><span class="badge bg-rose">Opsi 4</span> Full Context</td>
+        <td>~1.000 token</td>
+        <td>Agent otonom, Cursor, Copilot Workspace</td>
+        <td style="color:var(--green)">Paling rendah</td>
+        <td>🤖 Agent verifikasi sendiri</td>
+      </tr>
+    </table>
+    </div>
+
+    <div class="callout tip" style="margin-top:20px">
+      <div class="callout-icon">🎯</div>
+      <div class="callout-body">
+        <strong>Rekomendasi praktis:</strong>
+        Mulai dengan <strong>Opsi 2</strong> untuk percobaan pertama. Jika hasilnya kurang presisi (fungsi salah tempat, ada yang hilang), naik ke <strong>Opsi 3</strong>. Gunakan <strong>Opsi 4</strong> hanya untuk agent otonom yang akan bekerja tanpa supervisi.
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- end content -->
+</body>
+</html>
