@@ -454,12 +454,13 @@ input[type=number]{-moz-appearance:textfield}
 /* Absensi per kolektor */
 .absen-kol-section{padding:12px 14px 6px}
 .absen-kol-title{font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
-.absen-kol-list{display:flex;flex-direction:column;gap:8px}
-.absen-kol-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:8px;background:var(--slate-light);border:1.5px solid var(--border)}
-.absen-kol-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.absen-kol-name{font-size:.82rem;font-weight:700;color:var(--text);flex:1}
-.absen-kol-progress{font-size:.72rem;font-weight:600;color:var(--text-muted)}
-.absen-kol-total{font-size:.78rem;font-weight:800;color:var(--success)}
+.absen-kol-list{display:flex;flex-direction:column;gap:6px}
+.absen-kol-item{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--card-bg);transition:all .2s ease;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.absen-kol-item:active{transform:scale(0.985)}
+.absen-kol-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.absen-kol-name{font-size:.85rem;font-weight:800;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.absen-kol-progress{font-size:.68rem;font-weight:700;color:var(--text-muted);flex-shrink:0;white-space:nowrap}
+.absen-kol-total{font-weight:800;color:var(--success);font-size:.78rem;flex-shrink:0;white-space:nowrap}
 
 .absen-filter{display:flex;gap:8px;padding:12px 14px 6px;overflow-x:auto;scrollbar-width:none}
 .absen-filter::-webkit-scrollbar{display:none}
@@ -815,78 +816,22 @@ input[type=number]{-moz-appearance:textfield}
 .rekap-expand-val.green{color:var(--success)}.rekap-expand-val.blue{color:var(--primary)}.rekap-expand-val.orange{color:var(--warning)}.rekap-expand-val.red{color:var(--danger)}
 .rekap-chevron{font-size:.65rem;color:var(--text-muted);transition:transform .3s;margin-top:2px;flex-shrink:0}
 .rekap-item.expanded .rekap-chevron{transform:rotate(180deg)}
-/* EXPAND - Absen Kol — identik konsep dengan grup-card di Rekap */
-.absen-kol-item{
-  cursor:pointer;
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  overflow:hidden;
-  background:var(--card-bg);
-  transition:all .2s ease;
-  box-shadow:0 2px 8px rgba(0,0,0,.15);
-  padding:0;
-  display:flex;
-  flex-direction:column;
-}
-.absen-kol-item:active{transform:scale(0.985)}
-/* Header baris kolektor (selalu terlihat) */
-.absen-kol-header{
-  padding:12px 14px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  background:var(--slate-light);
-  user-select:none;
-}
-/* Body yang expand/collapse smooth */
-.absen-kol-expand{
-  overflow:hidden;
-  max-height:0;
-  transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .25s ease,padding .2s;
-  opacity:0;
-  border-top:0 solid var(--border);
-}
-.absen-kol-item.expanded .absen-kol-expand{
-  max-height:9999px; /* nilai besar agar semua nasabah tampil */
-  opacity:1;
-  border-top:1px solid var(--border);
-  padding-top:6px;
-}
-.absen-kol-expand-body{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-  padding:0 10px 10px;
-}
-.absen-kol-expand-row{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:7px 9px;
-  border-radius:8px;
-  background:var(--card-bg);
-  border:1px solid var(--border);
-  transition:background .15s;
-}
-.absen-kol-expand-row:active{background:var(--slate-light)}
+/* EXPAND - Absen Kol */
+.absen-kol-item{cursor:pointer}
+.absen-kol-expand{overflow:hidden;max-height:0;transition:max-height .3s ease;border-top:0 solid var(--border)}
+.absen-kol-item.expanded .absen-kol-expand{max-height:2000px;border-top:1px solid var(--border);padding-top:6px}
+.absen-kol-expand-body{display:flex;flex-direction:column;gap:4px;padding:0 6px 6px}
+.absen-kol-expand-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid var(--border)}
+.absen-kol-expand-row:last-child{border-bottom:none}
 .absen-kol-expand-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:#fff;flex-shrink:0}
-.absen-kol-expand-nama{flex:1;font-size:.78rem;font-weight:700;color:var(--text)}
-.absen-kol-expand-setoran{font-size:.72rem;font-weight:700;color:var(--success);flex-shrink:0;margin-right:4px}
-.absen-kol-expand-status{font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:10px;flex-shrink:0}
+.absen-kol-expand-nama{flex:1;font-size:.8rem;font-weight:700;color:var(--text);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.absen-kol-expand-status{font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:10px;flex-shrink:0}
 .absen-kol-expand-status.hadir{background:var(--success-light);color:var(--success)}
 .absen-kol-expand-status.belum{background:var(--slate-light);color:var(--text-muted)}
 .absen-kol-expand-status.kredit{background:var(--teal-light);color:var(--teal)}
 .absen-kol-expand-status.terlambat{background:var(--danger-light);color:var(--danger)}
-/* Chevron — sama dengan grup-chevron di Rekap */
-.absen-kol-chevron{
-  font-size:.75rem;color:var(--text-muted);
-  transition:transform .25s cubic-bezier(.4,0,.2,1);
-  flex-shrink:0;
-}
+.absen-kol-chevron{font-size:.75rem;color:var(--text-muted);transition:transform .25s;flex-shrink:0}
 .absen-kol-item.expanded .absen-kol-chevron{transform:rotate(180deg)}
-/* Progress bar mini di header kolektor */
-.absen-kol-progress-bar-wrap{height:3px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:4px;width:100%}
-.absen-kol-progress-bar{height:100%;border-radius:3px;transition:width .4s ease}
 .absen-item.kredit{border-color:var(--teal);background:var(--teal-light)}
 .absen-status-badge.kredit{background:var(--teal);color:#fff}
 .absen-toggle.kredit{background:var(--teal-light);border-color:var(--teal);color:var(--teal);cursor:default}
@@ -1028,14 +973,6 @@ input[type=number]{-moz-appearance:textfield}
       <div class="absen-sum-item"><div class="absen-sum-val" id="absenBelum" style="color:var(--warning)">0</div><div class="absen-sum-lbl">Belum</div></div>
       <div class="absen-sum-item"><div class="absen-sum-val" id="absenTotal">0</div><div class="absen-sum-lbl">Total</div></div>
     </div>
-
-    <!-- GRUP KOLEKTOR (SAMA SEPERTI REKAP) -->
-    <div style="margin: 12px 12px 6px; font-size: .78rem; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
-      <span>👥</span>
-      <span>Kelompok per Kolektor</span>
-    </div>
-    <div id="absenGrupList"></div>
-
     <!-- Ringkasan Hari Ini -->
     <div style="margin: 12px 12px 6px; font-size: .78rem; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
       <span>📊</span>
@@ -3129,115 +3066,9 @@ function buildAbsenEl(n,ab,bl){
   return el;
 }
 
-// ═══════════════════════════════════════
-// ABSENSI - GRUP KOLEKTOR CANTIK (SAMA SEPERTI REKAP)
-// ═══════════════════════════════════════
-function renderAbsensiGrupKolektor() {
-  const container = document.getElementById('absenGrupList');
-  if (!container) return;
-
-  const dataHariIni = curData();
-  if (!dataHariIni || dataHariIni.length === 0) {
-    container.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:.8rem;">Belum ada data nasabah hari ini.</div>`;
-    return;
-  }
-
-  const grupMap = buildGrupMap(dataHariIni);
-  const ab = getAb();
-  const bl = getBL();
-  const nasabahAll = buildNasabahList();
-
-  container.innerHTML = '';
-
-  // Sort persis sama seperti Rekap — descending totalSubTotal
-  Object.entries(grupMap).sort((a,b)=>b[1].totalSubTotal-a[1].totalSubTotal).forEach(([kol,g],gi)=>{
-    const color = getColor(kol);
-    const uid = 'agk'+gi;
-
-    // Hitung hadir & terkumpul pakai buildNasabahList (konsisten dengan Absensi)
-    const kolNasabah = nasabahAll.filter(n => n.kolektor === kol);
-    let hadirCount = 0, terkumpul = 0;
-    kolNasabah.forEach(n => {
-      if (n.isHadir) { hadirCount++; terkumpul += n.setoranHari * (bl[n.key]||1); }
-    });
-    const total = kolNasabah.length || g.nasabah.length;
-    const persen = total > 0 ? Math.round((hadirCount / total) * 100) : 0;
-    const barColor = persen>=80?'var(--success)':persen>=40?'var(--warning)':'var(--danger)';
-
-    // Setoran per hari total kolektor ini
-    const setoranHari = g.nasabah.reduce((s,n)=>s+(n.setoranHari||0),0);
-
-    // Baris nasabah dengan checkbox + status badge
-    const nasabahRows = g.nasabah.map(n => {
-      const nData = kolNasabah.find(x=>x.nama===n.nama)||{};
-      const isHadir = nData.isHadir || !!(ab[n.nama.toLowerCase()]?.hadir);
-      const isKredit = nData.isKredit;
-      const isNunggak = nData.adaNunggak;
-      const stCls = isKredit?'kredit':isNunggak?'terlambat':isHadir?'hadir':'belum';
-      const stLabel = isKredit?'✨ Kredit':isNunggak?'🔴 Nunggak':isHadir?'✅ Hadir':'⏳ Belum';
-      return `
-        <div class="grup-nasabah-item" style="align-items:center;gap:8px">
-          <input type="checkbox" ${isHadir ? 'checked' : ''}
-                 onchange="toggleAbsenFromGrup('${n.nama}', this.checked)"
-                 style="width:16px;height:16px;accent-color:#7c3aed;cursor:pointer;flex-shrink:0">
-          <div style="width:26px;height:26px;border-radius:50%;background:${color};display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:800;color:#fff;flex-shrink:0">${initials(n.nama)}</div>
-          <div style="flex:1;min-width:0">
-            <div class="nasabah-nama" style="font-size:.8rem">${n.nama}</div>
-          </div>
-          <div style="font-weight:700;color:var(--success);font-size:.78rem;margin-right:6px">${rp(n.setoranHari||0)}</div>
-          <div class="absen-kol-expand-status ${stCls}">${stLabel}</div>
-        </div>`;
-    }).join('');
-
-    const card = document.createElement('div');
-    card.className = 'grup-card';
-    card.innerHTML = `
-      <div class="grup-header" onclick="(function(hdr){
-        const body=document.getElementById('${uid}');
-        const chev=document.getElementById('chev-${uid}');
-        const open=body.classList.contains('open');
-        body.classList.toggle('open',!open);
-        if(!open){body.style.maxHeight=body.scrollHeight+'px';body.style.borderTopWidth='1px';body.style.paddingTop='6px';body.style.paddingBottom='8px';}
-        else{body.style.maxHeight='0';body.style.borderTopWidth='0';body.style.paddingTop='0';body.style.paddingBottom='0';}
-        chev.classList.toggle('open',!open);
-      })(this)">
-        <div class="grup-dot" style="background:${color}"></div>
-        <div style="flex:1;min-width:0">
-          <div class="grup-name">${kol}</div>
-          <div class="grup-setoran">Setoran/hari: ${rp(setoranHari)}</div>
-        </div>
-        <div class="grup-meta">
-          <div>${total} Nasabah</div>
-          <div class="grup-total">${rp(terkumpul)}</div>
-        </div>
-        <div class="grup-chevron" id="chev-${uid}">▾</div>
-      </div>
-      <div class="grup-body" id="${uid}" style="max-height:0;padding-top:0;padding-bottom:0;border-top:0 solid var(--border);transition:max-height .3s ease,padding .2s,border-top-width .2s">
-        ${nasabahRows}
-      </div>`;
-
-    container.appendChild(card);
-  });
-}
-
-function toggleGrupAbsen(uid, el) {
-  const body = document.getElementById(uid);
-  const chev = document.getElementById('chev-'+uid);
-  if (!body || !chev) return;
-
-  if (body.style.maxHeight && body.style.maxHeight !== '0px') {
-    body.style.maxHeight = '0px';
-    chev.style.transform = 'rotate(0deg)';
-  } else {
-    body.style.maxHeight = body.scrollHeight + 'px';
-    chev.style.transform = 'rotate(180deg)';
-  }
-}
-
 function renderAbsensi(){
   if(activePage!=='Absensi')return;
   renderNunggakAlert();
-  renderAbsensiGrupKolektor();   // ← Grup Kolektor cantik (sama seperti Rekap)
   const ab=getAb();const bl=getBL();
   const nasabahList=buildNasabahList();
   const today=todayKey();
@@ -3299,7 +3130,6 @@ function renderAbsensi(){
   Object.entries(kolMap).sort((a,b)=>b[1].total-a[1].total).forEach(([kol,k])=>{
     const pct=k.total>0?Math.round(k.hadir/k.total*100):0;
     const color=getColor(kol);
-    const barColor=pct>=80?'var(--success)':pct>=40?'var(--warning)':'var(--danger)';
     const kolNasabah=nasabahList.filter(n=>n.kolektor===kol)
       .sort((a,b)=>{const ra=a.isHadir?(a.isKredit?1:2):0,rb=b.isHadir?(b.isKredit?1:2):0;return ra-rb||a.nama.localeCompare(b.nama);});
     const nasabahRows=kolNasabah.map(n=>{
@@ -3308,30 +3138,20 @@ function renderAbsensi(){
       return `<div class="absen-kol-expand-row">
         <div class="absen-kol-expand-avatar" style="background:${color}">${initials(n.nama)}</div>
         <div class="absen-kol-expand-nama">${n.nama}</div>
-        <div class="absen-kol-expand-setoran">${rp(n.setoranHari)}</div>
+        <div style="font-size:.65rem;color:var(--text-muted);flex-shrink:0;margin-right:4px">${rp(n.setoranHari)}</div>
         <div class="absen-kol-expand-status ${stCls}">${stLabel}</div>
       </div>`;
     }).join('');
-    const el=document.createElement('div');
-    el.className='absen-kol-item';
-    // Gunakan onclick yang toggle class + animasi max-height dinamis
+    const el=document.createElement('div');el.className='absen-kol-item';
     el.innerHTML=`
-      <div class="absen-kol-header" onclick="(function(hdr){const item=hdr.closest('.absen-kol-item');item.classList.toggle('expanded');const exp=item.querySelector('.absen-kol-expand');const body=item.querySelector('.absen-kol-expand-body');exp.style.maxHeight=item.classList.contains('expanded')?body.scrollHeight+32+'px':'0';})(this)">
-        <div style="width:9px;height:9px;border-radius:50%;background:${color};flex-shrink:0"></div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:.85rem;font-weight:800;color:var(--text)">${kol}</div>
-          <div class="absen-kol-progress-bar-wrap"><div class="absen-kol-progress-bar" style="width:${pct}%;background:${barColor}"></div></div>
-          <div style="font-size:.68rem;font-weight:700;color:${barColor};margin-top:3px">${k.hadir}/${k.total} hadir · ${pct}%</div>
-        </div>
-        <div style="text-align:right;flex-shrink:0">
-          <div style="font-size:.68rem;color:var(--text-muted)">${k.total} Nasabah</div>
-          <div style="font-size:.78rem;font-weight:800;color:var(--success)">${rp(k.setTerkumpul)}</div>
-        </div>
+      <div style="padding:13px 15px;display:flex;align-items:center;gap:11px;cursor:pointer;user-select:none;background:var(--slate-light)" onclick="this.closest('.absen-kol-item').classList.toggle('expanded')">
+        <div class="absen-kol-dot" style="background:${color}"></div>
+        <div class="absen-kol-name">${kol}</div>
+        <div class="absen-kol-progress">${k.hadir}/${k.total} · ${pct}%</div>
+        <div class="absen-kol-total">${rp(k.setTerkumpul)}</div>
         <div class="absen-kol-chevron">▾</div>
       </div>
-      <div class="absen-kol-expand" style="max-height:0">
-        <div class="absen-kol-expand-body">${nasabahRows}</div>
-      </div>`;
+      <div class="absen-kol-expand"><div class="absen-kol-expand-body">${nasabahRows}</div></div>`;
     kolEl.appendChild(el);
   });
 
@@ -3447,16 +3267,15 @@ function updateAbsenHeader(){
       </div>`;
     }).join('');
     const el=document.createElement('div');el.className='absen-kol-item';
-    el.innerHTML=`<div style="width:100%">
-      <div style="display:flex;align-items:center;gap:10px" onclick="this.closest('.absen-kol-item').classList.toggle('expanded')">
+    el.innerHTML=`
+      <div style="padding:13px 15px;display:flex;align-items:center;gap:11px;cursor:pointer;user-select:none;background:var(--slate-light)" onclick="this.closest('.absen-kol-item').classList.toggle('expanded')">
         <div class="absen-kol-dot" style="background:${color}"></div>
         <div class="absen-kol-name">${kol}</div>
         <div class="absen-kol-progress">${k.hadir}/${k.total} · ${pct}%</div>
         <div class="absen-kol-total">${rp(k.setTerkumpul)}</div>
         <div class="absen-kol-chevron">▾</div>
       </div>
-      <div class="absen-kol-expand"><div class="absen-kol-expand-body">${nasabahRows}</div></div>
-    </div>`;
+      <div class="absen-kol-expand"><div class="absen-kol-expand-body">${nasabahRows}</div></div>`;
     kolEl.appendChild(el);
   });
 }
